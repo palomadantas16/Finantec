@@ -15,11 +15,6 @@ Nas escolas brasileiras, e especialmente no contexto do ensino médio, observamo
 Nosso objetivo foi criar uma plataforma que não fosse apenas "mais um site de finanças", mas sim um ambiente onde o aluno pudesse aprender jogando (gamificação), controlar seus gastos de forma simples e visualizar seu progresso através de gráficos intuitivos.
 Durante o desenvolvimento, aplicamos pesquisas com os estudantes da ETECAMP e notamos que a maioria tinha interesse em investir, mas não sabia por onde começar. Assim, unimos a tecnologia web moderna com a educação financeira para criar uma ferramenta capaz de transformar a relação do jovem com o dinheiro.
 
-Algumas imagens para demonstrar o site: 
-
-![Tela Inicial](design/Telas_Sistema/Exemplo_TelaInicial.png)
-![Dashboard do Usuário](design/Telas_Sistema/Exemplo_PainelUsuario.png)
-![Tela de Jogos](design/Telas_Sistema/Exemplo_TelaInicialJogo.png)
 
 ## Linguagens usadas no website: 
 
