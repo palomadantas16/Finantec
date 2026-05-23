@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Ações</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  background: linear-gradient(95deg, #1d321e 0%, #09560d 100%);
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 42px;
+  margin-top: 32px;
+  color: #00a30b;
+  font-weight: 800;
+ text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+  margin-bottom: 10px;
+  animation: fadeInDown 0.8s ease;
+  font-family: "Inter", sans-serif;
+  letter-spacing: -1px;
+}
+
+.header p {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.main-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+  animation: fadeInUp 0.8s ease;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slider-section { margin-bottom: 28px; }
+.slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.slider-label span { font-weight: 700; color: #1f2937; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+.slider-value { font-size: 22px; font-weight: 800; color: #05961b; padding: 8px 18px; background: linear-gradient(135deg, #f0fdf4, #d1fae5); border-radius: 10px; border: 2px solid #a9f3a7; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1); }
+.slider { width: 100%; height: 10px; border-radius: 8px; background: linear-gradient(to right, #059605 0%, #10b91b 100%); outline: none; position: relative; cursor: pointer; transition: all 0.3s ease; }
+.slider:hover { transform: scaleY(1.2); box-shadow: 0 0 15px rgba(16, 185, 47, 0.4); }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; cursor: pointer; box-shadow: 0 3px 12px rgba(16, 185, 36, 0.5); border: 3px solid #16b910; transition: all 0.3s ease; }
+.slider::-webkit-slider-thumb:hover { transform: scale(1.25); box-shadow: 0 5px 20px rgba(16, 185, 19, 0.7); }
+.slider::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: #ffffff; cursor: pointer; border: 3px solid #10b910; box-shadow: 0 3px 12px rgba(16, 185, 22, 0.5); transition: all 0.3s ease; }
+.slider::-moz-range-thumb:hover { transform: scale(1.25); box-shadow: 0 5px 20px rgba(16, 185, 36, 0.7); }
+
+.toggle-section { background: linear-gradient(135deg, #f0fdf4, #d1fae5); padding: 24px; border-radius: 14px; margin-bottom: 28px; border: 2px solid #a7f3a7; }
+.toggle-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.toggle-header label { font-weight: 700; color: #21371f; font-size: 15px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #d1d5db; transition: 0.4s; border-radius: 34px; }
+.switch-slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: 0.4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.switch input:checked + .switch-slider { background: linear-gradient(135deg, #05960f, #1eb910); }
+.switch input:checked + .switch-slider:before { transform: translateX(26px); }
+
+.monthly-contribution { display: none; animation: slideDown 0.3s ease; }
+.monthly-contribution.active { display: block; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-top: 35px; transition: filter 0.3s ease; }
+.result-card { background: linear-gradient(135deg, #1f2937, #111827); padding: 26px; border-radius: 14px; text-align: center; color: white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden; border: 2px solid #37513d; }
+.result-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(16, 185, 53, 0.08), transparent); animation: rotate 10s linear infinite; }
+@keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.result-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 12px 35px rgba(22, 185, 16, 0.3); border-color: #10b981; }
+.result-icon { font-size: 44px; margin-bottom: 10px; position: relative; z-index: 1; filter: drop-shadow(0 0 10px rgba(16, 185, 36, 0.4)); }
+.result-label { font-size: 11px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; font-weight: 700; position: relative; z-index: 1; color: #9ca3af; }
+.result-value { font-size: 28px; font-weight: 800; position: relative; z-index: 1; color: #10b913; text-shadow: 0 0 20px rgba(16, 185, 16, 0.3); }
+
+.visual-chart { margin-top: 40px; background: linear-gradient(135deg, #ffffff, #f9fafb); padding: 28px; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid #e5e7eb; transition: filter 0.3s ease; }
+.visual-chart h3 { color: #1f3724; font-size: 20px; margin-bottom: 28px; text-align: center; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.comparison-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 20px; }
+.bar-container { text-align: center; }
+.bar-label-top { font-weight: 700; color: #1f2937; margin-bottom: 18px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+.bar-wrapper { height: 240px; display: flex; align-items: flex-end; justify-content: center; position: relative; }
+.bar { width: 80px; background: linear-gradient(to top, #10b918, #39d334); border-radius: 12px 12px 0 0; position: relative; transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 -4px 18px rgba(22, 185, 16, 0.4); }
+.bar.invested { background: linear-gradient(to top, #6b7280, #9ca3af); box-shadow: 0 -4px 18px rgba(107, 128, 110, 0.3); }
+.bar-value { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); font-weight: 800; color: #1f2937; font-size: 13px; white-space: nowrap; background: white; padding: 6px 14px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.12); border: 2px solid #e5e7eb; }
+
+.save-button { background-color: white; color: rgb(0, 0, 0); border: none; padding: 16px 40px; font-size: 16px; font-weight: 700; border-radius: 12px; cursor: pointer; display: none; /* Começa escondido */ align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); transition: all 0.3s ease; font-family: 'Inter', 'Poppins', sans-serif; }
+.save-button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5); background-color: #d1d5db; }
+.button-icon { font-size: 20px; }
+
+/* --- NOVOS ESTILOS PARA O OVERLAY E EFEITO BLUR --- */
+.blur-effect { filter: blur(8px); pointer-events: none; user-select: none; }
+#login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+.overlay-content { background: #ffffff; color: #333; padding: 40px; border-radius: 20px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.overlay-content h2 { color: #095f06; font-size: 28px; margin-bottom: 15px; }
+.overlay-content p { font-size: 16px; margin-bottom: 30px; line-height: 1.6; }
+.overlay-buttons { display: flex; flex-direction: column; gap: 15px; }
+.overlay-buttons a { padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; transition: transform 0.2s ease; display: block; }
+.overlay-buttons a:hover { transform: scale(1.03); }
+.btn-login { background: linear-gradient(145deg, #10b918, #095f06); color: #fff; }
+.btn-register { background-color: #f0f0f0; color: #333; border: 1px solid #ddd; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><img src="../img/coin-flip-59.gif" alt="" style="width: 35px; height: 35px; margin-right: 10px;">CALCULADORA DE AÇÕES:</h1>
+      <p>Simule seus investimentos na Bolsa de Valores</p>
+    </div>
+
+    <div class="main-card">
+      
+      <div class="slider-section">
+        <div class="slider-label">
+          <span>Capital Inicial</span>
+          <div class="slider-value" id="principalValue">R$ 10.000,00</div>
+        </div>
+        <input type="range" min="1000" max="100000" value="10000" step="1000" class="slider" id="principalSlider">
+      </div>
+
+      <div class="slider-section">
+        <div class="slider-label">
+          <span>Valorização Anual</span>
+          <div class="slider-value" id="rateValue">10%</div>
+        </div>
+        <input type="range" min="1" max="30" value="10" step="0.5" class="slider" id="rateSlider">
+      </div>
+
+      <div class="slider-section">
+        <div class="slider-label">
+          <span>Período</span>
+          <div class="slider-value" id="timeValue">5 anos</div>
+        </div>
+        <input type="range" min="1" max="30" value="5" step="1" class="slider" id="timeSlider">
+      </div>
+
+      <div class="toggle-section">
+        <div class="toggle-header">
+          <label><span>Aportes Mensais</span></label>
+          <label class="switch"><input type="checkbox" id="monthlyToggle"><span class="switch-slider"></span></label>
+        </div>
+        
+        <div class="monthly-contribution" id="monthlySection">
+          <div class="slider-label">
+            <span>Valor Mensal</span>
+            <div class="slider-value" id="monthlyValue">R$ 500,00</div>
+          </div>
+          <input type="range" min="100" max="5000" value="500" step="100" class="slider" id="monthlySlider">
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="result-card">
+          <div class="result-icon"><img src="../img/dindincoin.png" alt="" style="width: 90px; height: 90px;"></div>
+          <div class="result-label">Patrimônio Final</div>
+          <div class="result-value" id="totalResult">R$ 0,00</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-icon"><img src="../img/sacodecoins.png" alt="" style="width: 100px; height: 100px;"></div>
+          <div class="result-label">Ganho de Capital</div>
+          <div class="result-value" id="profitResult">R$ 0,00</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-icon"><img src="../img/rentabi.png" alt="" style="width: 150px; height: 100px;"></div>
+          <div class="result-label">Rentabilidade</div>
+          <div class="result-value" id="roiResult">0%</div>
+        </div>
+      </div>
+
+      <div class="visual-chart">
+        <h3>Investido vs Patrimônio</h3>
+        <div class="comparison-bars">
+          <div class="bar-container">
+            <div class="bar-label-top">Total Investido</div>
+            <div class="bar-wrapper">
+              <div class="bar invested" id="investedBar"><div class="bar-value" id="investedValue">R$ 0,00</div></div>
+            </div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label-top">Patrimônio Acumulado</div>
+            <div class="bar-wrapper">
+              <div class="bar" id="totalBar"><div class="bar-value" id="totalValue">R$ 0,00</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px;">
+        <button id="saveSimulation" class="save-button">
+          <span class="button-icon">💾</span> Salvar Simulação
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="login-overlay">
+    <div class="overlay-content">
+      
+      <p>Faça login ou crie sua conta para ver o resultado detalhado e salvar seus cálculos no histórico.</p>
+      <div class="overlay-buttons">
+        <a href="../html/loginCadastroNOVO.html" class="btn-login">Fazer Login</a>
+        <a href="../html/loginCadastroNOVO.html#cadastro" class="btn-register">Criar Conta Grátis</a>
+      </div>
+    </div>
+  </div>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- ELEMENTOS DO DOM ---
+    const principalSlider = document.getElementById('principalSlider');
+    const rateSlider = document.getElementById('rateSlider');
+    const timeSlider = document.getElementById('timeSlider');
+    const monthlyToggle = document.getElementById('monthlyToggle');
+    const monthlySlider = document.getElementById('monthlySlider');
+    const monthlySection = document.getElementById('monthlySection');
+    const saveButton = document.getElementById('saveSimulation');
+    let ultimoCalculo = null;
+
+    // --- FUNÇÕES AUXILIARES ---
+    function formatCurrency(value) {
+        return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function showLoginOverlay() {
+        document.querySelector('.results').classList.add('blur-effect');
+        document.querySelector('.visual-chart').classList.add('blur-effect');
+        document.getElementById('login-overlay').style.display = 'flex';
+    }
+
+    function hideLoginOverlay() {
+        document.querySelector('.results').classList.remove('blur-effect');
+        document.querySelector('.visual-chart').classList.remove('blur-effect');
+        document.getElementById('login-overlay').style.display = 'none';
+    }
+
+    // --- FUNÇÃO PRINCIPAL DE CÁLCULO E EXIBIÇÃO ---
+    function calculateAndDisplay() {
+        // 1. OBTER VALORES DOS INPUTS
+        const principal = parseFloat(principalSlider.value);
+        const annualRate = parseFloat(rateSlider.value) / 100;
+        const timeInYears = parseFloat(timeSlider.value);
+        const includeMonthly = monthlyToggle.checked;
+        const monthlyContribution = includeMonthly ? parseFloat(monthlySlider.value) : 0;
+
+        // 2. LÓGICA DE CÁLCULO COM JUROS COMPOSTOS (CORRIGIDO)
+        const months = timeInYears * 12;
+        const monthlyRate = annualRate / 12;
+
+        // FV do valor inicial
+        let futureValuePrincipal = principal * Math.pow(1 + monthlyRate, months);
+        // FV dos aportes mensais (Anuidade)
+        let futureValueMonthly = 0;
+        if (includeMonthly && monthlyRate > 0) {
+            futureValueMonthly = monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+        } else if (includeMonthly) {
+            futureValueMonthly = monthlyContribution * months;
+        }
+
+        const totalFinal = futureValuePrincipal + futureValueMonthly;
+        const totalInvested = principal + (monthlyContribution * months);
+        const totalProfit = totalFinal - totalInvested;
+        const roi = totalInvested > 0 ? (totalProfit / totalInvested) * 100 : 0;
+
+        // 3. VERIFICAR LOGIN E DECIDIR O QUE EXIBIR
+        const token = localStorage.getItem('token');
+        
+        hideLoginOverlay(); // Garante que o overlay esteja escondido por padrão
+        
+        if (token) {
+            // USUÁRIO LOGADO: Exibe resultados claros
+            document.getElementById('totalResult').textContent = formatCurrency(totalFinal);
+            document.getElementById('profitResult').textContent = formatCurrency(totalProfit);
+            document.getElementById('roiResult').textContent = roi.toFixed(1) + '%';
+            document.getElementById('investedValue').textContent = formatCurrency(totalInvested);
+            document.getElementById('totalValue').textContent = formatCurrency(totalFinal);
+
+            // Lógica das barras visuais
+            const maxHeight = 240; // Altura máxima da barra em pixels
+            const totalBarHeight = totalFinal > 0 ? maxHeight : 0;
+            const investedBarHeight = totalFinal > 0 ? (totalInvested / totalFinal) * maxHeight : 0;
+            document.getElementById('investedBar').style.height = `${investedBarHeight}px`;
+            document.getElementById('totalBar').style.height = `${totalBarHeight}px`;
+            
+            // Prepara para salvar e exibe o botão
+            ultimoCalculo = { tipo_calculo: 'Ações (Juros Compostos)', valor_principal: principal, taxa_juros: parseFloat(rateSlider.value), tempo: timeInYears, resultado: totalFinal };
+            saveButton.style.display = 'inline-flex';
+
+        } else {
+            // VISITANTE: Exibe placeholders, borra a tela e mostra o overlay
+            document.getElementById('totalResult').textContent = 'R$ --,--';
+            document.getElementById('profitResult').textContent = 'R$ --,--';
+            document.getElementById('roiResult').textContent = '--%';
+            document.getElementById('investedValue').textContent = 'R$ --,--';
+            document.getElementById('totalValue').textContent = 'R$ --,--';
+            document.getElementById('investedBar').style.height = '10px';
+            document.getElementById('totalBar').style.height = '10px';
+            saveButton.style.display = 'none';
+            showLoginOverlay();
+        }
+    }
+
+    // --- EVENT LISTENERS ---
+    function updateUIAndRecalculate() {
+        // Atualiza os labels dos sliders
+        document.getElementById('principalValue').textContent = formatCurrency(parseFloat(principalSlider.value));
+        document.getElementById('rateValue').textContent = rateSlider.value + '%';
+        const years = timeSlider.value;
+        document.getElementById('timeValue').textContent = years + (years == 1 ? ' ano' : ' anos');
+        document.getElementById('monthlyValue').textContent = formatCurrency(parseFloat(monthlySlider.value));
+
+        calculateAndDisplay();
+    }
+
+    [principalSlider, rateSlider, timeSlider, monthlySlider].forEach(slider => {
+        slider.addEventListener('input', updateUIAndRecalculate);
+    });
+
+    monthlyToggle.addEventListener('change', () => {
+        monthlySection.classList.toggle('active', monthlyToggle.checked);
+        updateUIAndRecalculate();
+    });
+
+    saveButton.addEventListener('click', async () => {
+        if (!ultimoCalculo) return;
+        const token = localStorage.getItem('token');
+        if (!token) return alert('Você precisa estar logado para salvar!');
+        
+        try {
+            const res = await fetch('/api/calculadora/historico', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify(ultimoCalculo)
+            });
+            if (res.ok) {
+                alert('Simulação salva com sucesso!');
+                saveButton.style.display = 'none';
+                ultimoCalculo = null;
+            } else {
+                throw new Error('Falha ao salvar a simulação.');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar:', error);
+            alert(error.message);
+        }
+    });
+
+    // --- CÁLCULO INICIAL ---
+    updateUIAndRecalculate();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Histórico da Calculadora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+
+  <style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #e6f4ea;
+    display: flex;
+    min-height: 100vh;
+    color: #1c1c1c;
+}
+
+a, a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    background: #006c19;
+    padding: 30px 25px;
+    border-radius: 0 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    box-shadow: 5px 0 15px rgba(30, 127, 52, 0.3);
+    z-index: 1000;
+}
+
+.sidebar .logo {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    font-family: "Press Start 2P", system-ui;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+
+nav {
+    margin-top: 80px;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+nav a i {
+    min-width: 20px;
+    font-size: 18px;
+}
+
+nav a:hover {
+    background-color: #2f9e48;
+    box-shadow: 0 0 12px #2f9e48;
+    color: #d0f1d4;
+}
+
+nav a.active {
+    background-color: #146627;
+    box-shadow: 0 0 20px #146627;
+    font-weight: 700;
+    color: #c6eec1;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 400px;
+    background: #4f4f4f;
+    border-radius: 12px;
+    padding: 10px;
+    list-style: none;
+    margin: 0 0 0 10px;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: all 0.18s ease;
+    z-index: 2000;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.dropdown.open .dropdown-menu {
+    transform: scaleX(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.25s;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background-color: #2f9e48;
+}
+
+
+.calculadora-btn,
+.historico-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.historico-btn {
+    display: none;
+    background: #6dad6d;
+    margin-left: 20px;
+}
+
+.calculadora-container:hover .historico-btn {
+    display: flex;
+}
+
+
+.socials {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.socials a img.social-img {
+    max-width: 200px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.socials a img.social-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+.main {
+    margin-left: 280px;
+    flex: 1;
+    padding: 35px 40px;
+    background: #f7fcf7;
+    box-shadow: inset 0 0 60px #d9efd0;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #144d2e;
+    margin-bottom: 20px;
+}
+
+.campo {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+
+.historico-lista {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.historico-lista li {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(30, 127, 52, 0.2);
+    color: #144d2e;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.historico-lista li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(30, 127, 52, 0.3);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.overlay-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+}
+
+#historicoDetalhes {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: #333;
+}
+
+#historicoDetalhes p {
+    margin: 5px 0;
+}
+
+.actions-modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.actions-modal-buttons button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-add-renda {
+    background-color: #48bb78;
+    color: white;
+}
+
+.btn-add-renda:hover {
+    background-color: #38a169;
+}
+
+.btn-add-despesa {
+    background-color: #f56565;
+    color: white;
+}
+
+.btn-add-despesa:hover {
+    background-color: #e53e3e;
+}
+
+.btn-excluir-hist {
+    background-color: #a0aec0;
+    color: white;
+}
+
+.btn-excluir-hist:hover {
+    background-color: #718096;
+}
+
+.closeBtn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #edf2f7;
+    margin-top: 15px;
+}
+
+.closeBtn:hover {
+    background-color: #e2e8f0;
+}
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo"><a href="../html/home.html"><img src="../img/coin-flip-59.gif" alt="Logo Finantec" /></a>Finantec</div>
+    <nav>
+      <a href="../html/sistemaInicial.html"><i class="fas fa-signal"></i>Inicial</a>
+      <a href="../html/pagRenda.html"><i class="fas fa-th-large"></i>Rendas</a>
+      <a href="../html/pagDespesas.html"><i class="fas fa-shopping-cart"></i>Despesas</a>
+      <a href="../html/calendario.html"><i class="fas fa-calendar"></i>Calendário</a>
+      <div class="calculadora-container">
+        <a href="tiposCalcula.html" class="calculadora-btn">
+          <i class="fas fa-calculator"></i> Calculadoras
+        </a>
+        <a href="historico.html" class="historico-btn active">
+          <i class="fas fa-clock"></i> Histórico
+        </a>
+      </div>
+      <div class="dropdown">
+          <div class="dropdown-toggle"><i class="fas fa-book"></i>Estude sobre<i class="fas fa-caret-down"></i></div>
+          <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../html/informativaAcoes.html">Ações</a></li>
+              <li><a class="dropdown-item" href="../html/informativaCDB.html">CDB</a></li>
+              <li><a class="dropdown-item" href="../html/informativaCDI.html">CDI</a></li>
+              <li><a class="dropdown-item" href="../html/informativaFI.html">F.I</a></li>
+              <li><a class="dropdown-item" href="../html/informativaLCI_LCA.html">LCA e LCI</a></li>
+              <li><a class="dropdown-item" href="../html/informativaPoupança.html">Poupança</a></li>
+              <li><a class="dropdown-item" href="../html/informativaTesouro.html">Tesouro Direto</a></li>
+              <li><a class="dropdown-item" href="../html/informativaCC.html">Criptomoedas</a></li>
+          </ul>
+      </div>
+    </nav>
+     <div class="socials">
+      <a href="../jogo/indexJJ.html" target="_blank" title="Jogar"><img src="../img/botaJogar.png" alt="Jogar" class="social-img" /></a>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Histórico da Calculadora</h1>
+    <ul class="historico-lista" id="historicoLista">
+      </ul>
+  </div>
+  
+  <div id="overlayAcoesHistorico" class="overlay">
+    <div class="overlay-content">
+        <h2>Ações para este Cálculo</h2>
+        <div id="historicoDetalhes"></div>
+        <div class="actions-modal-buttons">
+            <button id="btnAddRenda"><i class="fas fa-plus"></i> Adicionar como Renda</button>
+            <button id="btnAddDespesa"><i class="fas fa-minus"></i> Adicionar como Despesa</button>
+            <button id="btnExcluirHist"><i class="fas fa-trash"></i> Excluir do Histórico</button>
+        </div>
+        <button class="closeBtn" id="fecharAcoesBtn">Fechar</button>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. AUTENTICAÇÃO E CONFIGURAÇÃO DA API
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'paginaLogin.html';
+        return;
+    }
+    const API_BASE_URL = 'http://localhost:5000';
+    const apiRequest = async (endpoint, options = {}) => {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, ...options
+        });
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'paginaLogin.html';
+        }
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || 'Erro na API');
+        }
+        const text = await response.text();
+        return text ? JSON.parse(text) : {};
+    };
+
+    // 2. ELEMENTOS DO DOM
+    const historicoLista = document.getElementById("historicoLista");
+    const overlay = document.getElementById('overlayAcoesHistorico');
+    const detalhesEl = document.getElementById('historicoDetalhes');
+    let historicoCache = [];
+
+    // 3. FUNÇÕES DE RENDERIZAÇÃO
+    const formatarMoeda = (valor) => `R$ ${parseFloat(valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    const formatarData = (dataISO) => new Date(dataISO).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+    const renderizarHistorico = () => {
+        if (historicoCache.length === 0) {
+            historicoLista.innerHTML = '<li><p>Você ainda não tem nenhum cálculo salvo no histórico.</p></li>';
+            return;
+        }
+
+        historicoLista.innerHTML = '';
+        historicoCache.forEach(item => {
+            const li = document.createElement('li');
+            li.dataset.id = item.id_calculo;
+            li.innerHTML = `
+                <div class="campo"><span>Data:</span> <span>${formatarData(item.data_calculo)}</span></div>
+                <div class="campo"><span>Tipo:</span> <span>${item.tipo_calculo}</span></div>
+                <div class="campo"><span>Resultado:</span> <span>${formatarMoeda(item.resultado)}</span></div>
+            `;
+            historicoLista.appendChild(li);
+        });
+    };
+
+    const carregarHistorico = async () => {
+        historicoLista.innerHTML = '<p>Carregando histórico...</p>';
+        try {
+            historicoCache = await apiRequest('/api/calculadora/historico');
+            renderizarHistorico();
+        } catch (error) {
+            console.error('Erro ao carregar histórico:', error);
+            historicoLista.innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    };
+
+    // 4. EVENT LISTENERS
+    const setupEventListeners = () => {
+        // Abrir o modal ao clicar em um item do histórico
+        historicoLista.addEventListener('click', (e) => {
+            const itemLi = e.target.closest('li');
+            if (!itemLi || !itemLi.dataset.id) return;
+            
+            const id = itemLi.dataset.id;
+            const itemSelecionado = historicoCache.find(item => item.id_calculo == id);
+            
+            if (itemSelecionado) {
+                // ##### CORREÇÃO APLICADA AQUI #####
+                // Usando 'tipo_calculo' que é a propriedade correta vinda da API
+                detalhesEl.innerHTML = `<p><strong>Cálculo:</strong> ${itemSelecionado.tipo_calculo}</p><p><strong>Resultado:</strong> ${formatarMoeda(itemSelecionado.resultado)}</p>`;
+                
+                overlay.dataset.idCalculo = id;
+                overlay.dataset.resultado = itemSelecionado.resultado;
+                
+                // ##### CORREÇÃO APLICADA AQUI TAMBÉM #####
+                overlay.dataset.descricao = `Cálculo de ${itemSelecionado.tipo_calculo}`;
+                
+                overlay.style.display = 'flex';
+            }
+        });
+
+        // Ações do modal
+        document.getElementById('btnAddRenda')?.addEventListener('click', async () => {
+            const valor = overlay.dataset.resultado;
+            const descricao = overlay.dataset.descricao;
+            await apiRequest('/api/rendas', { method: 'POST', body: JSON.stringify({ valor, descricao, data_recebimento: new Date().toISOString().slice(0, 10) }) });
+            alert('Valor adicionado às suas rendas com sucesso!');
+            overlay.style.display = 'none';
+        });
+        
+        document.getElementById('btnAddDespesa')?.addEventListener('click', async () => {
+            const valor = overlay.dataset.resultado;
+            const descricao = overlay.dataset.descricao;
+            // Categoria "Outros" (ID 7) como padrão
+            await apiRequest('/api/despesas', { method: 'POST', body: JSON.stringify({ valor, descricao, data_despesa: new Date().toISOString().slice(0, 10), id_categoria: 7 }) });
+            alert('Valor adicionado às suas despesas com sucesso!');
+            overlay.style.display = 'none';
+        });
+
+        document.getElementById('btnExcluirHist')?.addEventListener('click', async () => {
+            const id = overlay.dataset.idCalculo;
+            if (confirm('Tem certeza que deseja excluir este item do histórico?')) {
+                await apiRequest(`/api/calculadora/historico/${id}`, { method: 'DELETE' });
+                alert('Item excluído do histórico!');
+                overlay.style.display = 'none';
+                carregarHistorico(); // Atualiza a lista
+            }
+        });
+
+        document.getElementById('fecharAcoesBtn')?.addEventListener('click', () => {
+            overlay.style.display = 'none';
+        });
+
+        // Dropdown da sidebar
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggle.parentElement.classList.toggle('open');
+            });
+        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown.open').forEach(drop => drop.classList.remove('open'));
+            }
+        });
+    };
+
+    // 5. INICIALIZAÇÃO
+    carregarHistorico();
+    setupEventListeners();
+});
+</script>
+</body>
+</html>

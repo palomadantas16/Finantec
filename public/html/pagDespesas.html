@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINANTEC - Despesas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+</head>
+
+<body>
+    <style> 
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #e6f4ea; display: flex; min-height: 100vh; color: #00600d; margin: 0; overflow-x: hidden; }
+    .sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: 280px; background: #006c19; padding: 30px 25px; border-radius: 0 20px 20px 0; display: flex; flex-direction: column; justify-content: space-between; color: white; box-shadow: 5px 0 15px rgba(30, 127, 52, 0.3); z-index: 1000; }
+    .sidebar .logo { font-weight: 700; font-size: 20px; margin-bottom: 10px; letter-spacing: 1px; user-select: none; font-family: "Press Start 2P", system-ui; display: flex; align-items: center; gap: 10px; }
+    .sidebar .logo img { width: 40px; height: 40px; object-fit: contain; }
+    nav { margin-top: 80px; }
+    nav a { display: flex; align-items: center; gap: 15px; color: white; padding: 12px 18px; border-radius: 12px; margin-bottom: 12px; font-weight: 600; text-decoration: none; font-size: 17px; transition: background-color 0.3s ease, box-shadow 0.3s ease; }
+    nav a i { min-width: 20px; font-size: 18px; }
+    nav a:hover { background-color: #2f9e48; box-shadow: 0 0 12px #2f9e48; color: #d0f1d4; }
+    nav a.active { background-color: #146627; box-shadow: 0 0 20px #146627; font-weight: 700; color: #c6eec1; }
+    .calculadora-container { display: block; position: relative; width: 100%; }
+    .calculadora-btn, .historico-btn { display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; padding: 12px 18px; border-radius: 12px; font-weight: 600; font-size: 16px; transition: background-color 0.3s ease; }
+    .historico-btn { display: none; background: #6dad6d; margin-left: 20px; }
+    .calculadora-container:hover .historico-btn { display: flex; }
+    .dropdown { position: relative; }
+    .dropdown-toggle { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-radius: 12px; color: white; font-weight: 600; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease; }
+    .dropdown-toggle:hover { background-color: #2f9e48; box-shadow: 0 0 12px #2f9e48; }
+    .dropdown-menu { position: absolute; top: 0; left: 100%; width: 400px; background: #4f4f4f; border-radius: 12px; padding: 10px; list-style: none; margin: 0 0 0 10px; opacity: 0; transform: scaleX(0); transform-origin: left center; transition: all 0.18s ease; z-index: 2000; pointer-events: none; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    .dropdown.open .dropdown-menu { transform: scaleX(1); opacity: 1; pointer-events: auto; }
+    .dropdown-item { display: block; padding: 10px 15px; color: white; font-weight: 500; text-decoration: none; transition: background 0.25s; border-radius: 8px; text-align: center; font-size: 14px; }
+    .dropdown-item:hover { background-color: #2f9e48; }
+    .socials { display: flex; justify-content: center; margin-top: 20px; padding: 10px 0; }
+    .socials a img.social-img { max-width: 200px; height: auto; cursor: pointer; border-radius: 12px; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 3px 6px rgba(0,0,0,0.2); }
+    .socials a img.social-img:hover { transform: scale(1.05); box-shadow: 0 5px 12px rgba(0,0,0,0.3); }
+    .content { flex: 1; padding: 30px; margin-left: 280px; }
+    h1 { color: #004f00; margin-top: 30px; }
+    .add-btn { position: fixed; bottom: 30px; right: 30px; background: #006010; color: white; border: none; font-size: 30px; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); transition: transform 0.2s; }
+    .add-btn:hover { transform: scale(1.1); }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
+    .overlay-content { background: white; padding: 20px; border-radius: 15px; width: 430px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .overlay-content h2 { margin-top: 0; }
+    .overlay-content input, .overlay-content select { width: 100%; padding: 10px; margin: 12px 0; border-radius: 8px; border: 1px solid #ccc; }
+    .overlay-content button { padding: 12px; border: none; border-radius: 10px; background: #005c03; color: white; font-size: 16px; cursor: pointer; transition: 0.3s; width: 160px; margin-left: 20px; margin-top: 30px; }
+    .overlay-content button:hover { background: #53ab6a; }
+    .close-btn { float: right; cursor: pointer; font-size: 20px; color: #333; }
+    .expense-list { margin-top: 20px; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .expense-item { display: grid; grid-template-columns: 8px 1fr auto auto; align-items: center; gap: 15px; padding: 12px; border-bottom: 1px solid #eee; }
+    .expense-item .descricao { display: flex; flex-direction: column; }
+    .expense-item .categoria { font-weight: 700; }
+    .expense-item .valor { text-align: right; font-weight: 600; }
+    .expense-item:last-child { border-bottom: none; }
+    .trash-btn { color: #b60000; cursor: pointer; font-size: 18px; transition: transform 0.2s, color 0.2s; }
+    .trash-btn:hover{ color: #ff0000; transform: scale(1.2); }
+    .descricao span:last-child { font-size: 13px; color: #666; }
+    a, a:visited { color: inherit; text-decoration: none; }
+    .fixed-expense-section { margin-top: 20px; padding: 20px; background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .fixed-expense-section h2 { color: #004f00; margin-bottom: 10px; font-size: 1.2em; }
+    .fixed-expense-section p { font-size: 1.5em; font-weight: 600; color: #c0392b; }
+    </style>
+
+    <div class="sidebar">
+        <div class="logo"><a href="homePage.html"><img src="../img/coin-flip-59.gif" alt="Logo Finantec"></a>Finantec</div>
+        <nav>
+            <a href="../html/sistemaInicial.html"><i class="fas fa-signal"></i>Inicial</a>
+            <a href="../html/pagRenda.html"><i class="fas fa-th-large"></i>Rendas</a>
+            <a href="../html/pagDespesas.html" class="active"><i class="fas fa-shopping-cart"></i>Despesas</a>
+            <a href="../html/calendario.html"><i class="fas fa-calendar"></i>Calendário</a>
+            <div class="calculadora-container">
+                <a href="tiposCalcula.html" class="calculadora-btn"><i class="fas fa-calculator"></i> Calculadoras</a>
+                <a href="historico.html" class="historico-btn"><i class="fas fa-clock"></i> Histórico</a>
+            </div>      
+            <div class="dropdown">
+                <div class="dropdown-toggle"><i class="fas fa-book"></i>Estude sobre<i class="fas fa-caret-down"></i></div>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="../html/informativaAcoes.html">Ações</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaCDB.html">CDB</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaCDI.html">CDI</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaFI.html">F.I</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaLCI_LCA.html">LCA e LCI</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaPoupança.html">Poupança</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaTesouro.html">Tesouro Direto</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaCC.html">Criptomoedas</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="socials">
+            <a href="../jogo/indexJJ.html" target="_blank" title="Jogar">
+                <img src="../img/botaJogar.png" alt="Jogar" class="social-img" />
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Minhas Despesas</h1>
+
+        <div class="fixed-expense-section">
+            <h2>Despesa Fixa Mensal</h2>
+            <p id="despesaFixaValor">R$ 0,00</p>
+        </div>
+
+        <div class="expense-list">
+            <h2>Despesas Variáveis</h2>
+            <div id="expenseList">
+                <p>Carregando despesas...</p>
+            </div>
+        </div>
+    </div>
+
+    <button class="add-btn" id="openOverlay">+</button>
+
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <span class="close-btn" id="closeOverlay">&times;</span>
+            <h2>Adicionar Despesa</h2>
+            <form id="despesaForm">
+                <input type="number" id="valor" placeholder="Valor (R$)" required step="0.01">
+                <input type="date" id="data" required>
+                <select id="categoria" required>
+                    <option value="">Carregando categorias...</option>
+                </select>
+                <input type="text" id="descricao" placeholder="Descrição (opcional)">
+                <button type="button" id="cancelarDespesa">Cancelar</button>
+                <button type="button" id="salvarDespesa">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. CONFIGURAÇÕES GERAIS E API HELPER
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'paginaLogin.html';
+        return;
+    }
+    const API_BASE_URL = 'http://localhost:5000';
+    const apiRequest = async (endpoint, options = {}) => {
+        const defaultOptions = { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } };
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...defaultOptions, ...options });
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'paginaLogin.html';
+            throw new Error('Não autorizado');
+        }
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
+            throw new Error(errorData.message);
+        }
+        if (response.headers.get("content-type")?.includes("application/json")) {
+            return response.json();
+        }
+        return {};
+    };
+
+    // 2. ELEMENTOS DO DOM
+    const despesaFixaValorEl = document.getElementById("despesaFixaValor");
+    const expenseList = document.getElementById("expenseList");
+    const overlay = document.getElementById("overlay");
+    const despesaForm = document.getElementById("despesaForm");
+    const categoriaSelect = document.getElementById("categoria");
+    const cancelarBtn = document.getElementById("cancelarDespesa");
+
+    // 3. FUNÇÕES DE LÓGICA E RENDERIZAÇÃO
+    const formatarMoeda = (valor) => `R$ ${parseFloat(valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    const formatarData = (dataISO) => new Date(dataISO).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    const getColor = (categoria) => {
+        const colors = { 'educação': '#3498db', 'saúde': '#2ecc71', 'lazer': '#e74c3c', 'alimentação': '#f1c40f', 'transporte': '#9b59b6', 'moradia': '#1abc9c', 'outros': '#95a5a6' };
+        return colors[(categoria || '').toLowerCase()] || '#7f8c8d';
+    };
+    
+    // FUNÇÃO ADICIONADA PARA CARREGAR A DESPESA MENSAL
+    const carregarDespesaFixa = async () => {
+        try {
+            const data = await apiRequest('/api/usuarios/financeiro-dashboard');
+            despesaFixaValorEl.textContent = formatarMoeda(data.despesa);
+        } catch (error) {
+            console.error("Erro ao carregar despesa fixa:", error);
+            despesaFixaValorEl.textContent = "Erro ao carregar";
+        }
+    };
+    
+    async function carregarCategorias() {
+        try {
+            const categorias = await apiRequest('/api/despesas/categorias');
+            categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
+            categorias.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id_categoria;
+                option.textContent = cat.nome;
+                categoriaSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar categorias:', error);
+            categoriaSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+        }
+    }
+
+    async function carregarDespesas() {
+        expenseList.innerHTML = "<p>Carregando...</p>";
+        try {
+            const despesas = await apiRequest('/api/despesas');
+            expenseList.innerHTML = "";
+            const despesasVariaveis = despesas.filter(d => !d.descricao || !d.descricao.toLowerCase().includes('depósito na meta'));
+            
+            if (despesasVariaveis.length === 0) {
+                expenseList.innerHTML = "<p>Nenhuma despesa variável adicionada ainda.</p>";
+            } else {
+                despesasVariaveis.forEach(despesa => {
+                    const item = document.createElement("div");
+                    item.classList.add("expense-item");
+                    const categoriaNome = despesa.categoria_nome || 'Outros';
+                    const color = getColor(categoriaNome);
+                    item.innerHTML = `
+                      <div style="background:${color}; height:100%; border-radius:4px;"></div>
+                      <div class="descricao">
+                        <span class="categoria" style="color:${color};">${despesa.descricao && despesa.descricao !== 'Despesa' ? despesa.descricao : categoriaNome}</span>
+                        <span>${formatarData(despesa.data_despesa)}</span>
+                      </div>
+                      <div class="valor">${formatarMoeda(despesa.valor)}</div>
+                      <i class="fas fa-trash trash-btn" data-id="${despesa.id_despesa}"></i>
+                    `;
+                    expenseList.appendChild(item);
+                });
+            }
+        } catch (error) {
+            console.error("Erro ao carregar despesas:", error);
+            expenseList.innerHTML = "<p style='color:red;'>Falha ao carregar despesas.</p>";
+        }
+    }
+
+    // 4. EVENT LISTENERS
+    function setupEventListeners() {
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => { e.stopPropagation(); toggle.parentElement.classList.toggle('open'); });
+        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+            }
+        });
+
+        document.getElementById("openOverlay").addEventListener("click", () => overlay.style.display = "flex");
+        document.getElementById("closeOverlay").addEventListener("click", () => overlay.style.display = "none");
+        cancelarBtn.addEventListener("click", () => overlay.style.display = "none");
+
+        document.getElementById("salvarDespesa").addEventListener("click", async () => {
+            const valor = document.getElementById("valor").value;
+            const data = document.getElementById("data").value;
+            const id_categoria = categoriaSelect.value;
+            const descricao = document.getElementById("descricao").value;
+            if (!valor || !data || !id_categoria) {
+                return alert("Por favor, preencha valor, data e categoria.");
+            }
+            try {
+                await apiRequest('/api/despesas', {
+                    method: 'POST',
+                    body: JSON.stringify({ valor: parseFloat(valor), data_despesa: data, id_categoria: parseInt(id_categoria), descricao: descricao })
+                });
+                overlay.style.display = "none";
+                despesaForm.reset();
+                await carregarDespesas();
+            } catch (error) {
+                alert(`Não foi possível salvar a despesa: ${error.message}`);
+            }
+        });
+
+        expenseList.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("trash-btn")) {
+                const despesaId = e.target.dataset.id;
+                if (confirm("Tem certeza que quer excluir esta despesa?")) {
+                    try {
+                        await apiRequest(`/api/despesas/${despesaId}`, { method: 'DELETE' });
+                        await carregarDespesas();
+                    } catch (error) {
+                        alert(`Não foi possível excluir a despesa: ${error.message}`);
+                    }
+                }
+            }
+        });
+    }
+
+    // 5. INICIALIZAÇÃO
+    setupEventListeners();
+    carregarCategorias();
+    carregarDespesaFixa(); // <-- CHAMADA DA NOVA FUNÇÃO
+    carregarDespesas();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FINANTEC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+  <style>
+    * {
+      font-family: "Press Start 2P", system-ui;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #19211b;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(54, 255, 32, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(54, 255, 32, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(54, 255, 32, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 83, 3, 0.2) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 20%, rgba(135, 236, 133, 0.1) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: #36ff20;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 8s infinite ease-in-out;
+      z-index: 0;
+      box-shadow: 0 0 10px #36ff20;
+    }
+
+    @keyframes particleFloat {
+      0% { 
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% { 
+        transform: translateY(-100px) translateX(100px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .main-container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #80fa72;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 0 20px rgba(54, 255, 32, 0.5),
+                   0 0 40px rgba(54, 255, 32, 0.3);
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #36ff20, transparent);
+      animation: lineExpand 2s ease-in-out infinite;
+    }
+
+    @keyframes lineExpand {
+      0%, 100% { width: 60%; opacity: 0.5; }
+      50% { width: 80%; opacity: 1; }
+    }
+
+    .subtitle {
+      color: #87ec85;
+      font-size: clamp(0.8rem, 2vw, 0.5rem);
+      opacity: 0.9;
+      margin-top: 20px;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      width: 100%;
+      padding: 0 20px;
+      animation: fadeInUp 1s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: rgba(15, 20, 40, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(54, 255, 32, 0.2);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-decoration: none;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      min-height: 280px;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(54, 255, 32, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(54, 255, 32, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.6s, transform 0.6s;
+      transform: scale(0);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: #36ff20;
+      box-shadow: 0 20px 60px rgba(54, 255, 32, 0.3),
+                  inset 0 0 20px rgba(54, 255, 32, 0.1);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .card:active {
+      transform: translateY(-5px) scale(0.98);
+    }
+
+    .card:focus {
+      outline: none;
+      border-color: #36ff20;
+      box-shadow: 0 0 0 4px rgba(54, 255, 32, 0.3);
+    }
+
+    .card-icon-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .card-icon-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(54, 255, 32, 0.1), rgba(0, 83, 3, 0.2));
+      border-radius: 50%;
+      transition: all 0.4s;
+    }
+
+    .card:hover .card-icon-bg {
+      transform: scale(1.1) rotate(180deg);
+      background: linear-gradient(135deg, rgba(54, 255, 32, 0.2), rgba(0, 83, 3, 0.3));
+    }
+
+    .card-icon {
+      width: 110px;
+      height: 110px;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s;
+      filter: drop-shadow(0 0 20px rgba(54, 255, 32, 0.3));
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.15);
+    }
+
+    .card-content {
+      text-align: center;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #36ff20;
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+
+    .card:hover .card-title {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(54, 255, 32, 0.8);
+    }
+
+    .card-category {
+      font-size: 12px;
+      color: #87ec85;
+      opacity: 0.7;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #36ff20, #005303);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(54, 255, 32, 0.4);
+      z-index: 2;
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: rgba(15, 20, 40, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid #36ff20;
+      border-radius: 15px;
+      padding: 20px 30px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 10px 40px rgba(54, 255, 32, 0.3);
+      animation: slideInRight 0.5s ease;
+      min-width: 300px;
+    }
+
+    .notification.show {
+      display: block;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOutRight {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+
+    .notification.hide {
+      animation: slideOutRight 0.4s ease forwards;
+    }
+
+    .notification-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .notification-icon {
+      width: 24px;
+      height: 24px;
+      background: #36ff20;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notification-icon::after {
+      content: '✓';
+      color: #0a0e27;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .notification-title {
+      color: #36ff20;
+      font-size: 0.9rem;
+    }
+
+    .notification-body {
+      color: #87ec85;
+      font-size: 0.95rem;
+      margin-left: 34px;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 30px 15px;
+      }
+
+      header {
+        margin-bottom: 40px;
+      }
+
+      .cards-container {
+        gap: 20px;
+      }
+
+      .card {
+        padding: 30px 20px;
+        min-height: 250px;
+      }
+
+      .card-icon-wrapper {
+        width: 120px;
+        height: 120px;
+      }
+
+      .card-icon {
+        width: 90px;
+        height: 90px;
+      }
+
+      .notification {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        min-width: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-title {
+        font-size: 1.3rem;
+      }
+
+      .card-badge {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-gradient"></div>
+
+  <audio id="click-sound" src="../img/efeitosonoro.mp3" preload="auto"></audio>
+
+  <div class="main-container">
+    <header>
+      <h1>FINANTEC</h1>
+      <p class="subtitle">Escolha sua calculadora financeira:</p>
+    </header>
+
+    <div class="cards-container">
+      <a href="../html/calculadoraAcoes.html" class="card" data-nome="Ações" data-categoria="Renda Variável">
+        <span class="card-badge">NOVO</span>
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/ca30.png" alt="Ações" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">Ações</div>
+          <div class="card-category">Renda Variável</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraLCI.html" class="card" data-nome="LCI" data-categoria="Renda Fixa">
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/acoes (2).png" alt="LCI" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">LCI</div>
+          <div class="card-category">Renda Fixa</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraCDB.html" class="card" data-nome="CDB" data-categoria="Renda Fixa">
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/note.png" alt="CDB" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">CDB</div>
+          <div class="card-category">Renda Fixa</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraPoupança.html" class="card" data-nome="Poupança" data-categoria="Tradicional">
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/pop.png" alt="Poupança" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">Poupança</div>
+          <div class="card-category">Tradicional</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraLCA.html" class="card" data-nome="LCA" data-categoria="Renda Fixa">
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/cofre.png" alt="LCA" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">LCA</div>
+          <div class="card-category">Renda Fixa</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraJCompostos.html" class="card" data-nome="Juros Compostos" data-categoria="Básico">
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/ca10.png" alt="Juros Compostos" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">Juros Compostos</div>
+          <div class="card-category">Básico</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraJSimples.html" class="card" data-nome="Juros Simples" data-categoria="Básico">
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/ca20.png" alt="Juros Simples" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">Juros Simples</div>
+          <div class="card-category">Básico</div>
+        </div>
+      </a>
+
+      <a href="../html/calculadoraTesouro.html" class="card" data-nome="Tesouro Direto" data-categoria="Renda Fixa">
+        <span class="card-badge">POPULAR</span>
+        <div class="card-icon-wrapper">
+          <div class="card-icon-bg"></div>
+          <img src="../img/tesouro.png" alt="Tesouro Direto" class="card-icon">
+        </div>
+        <div class="card-content">
+          <div class="card-title">Tesouro Direto</div>
+          <div class="card-category">Renda Fixa</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div id="notification" class="notification">
+    <div class="notification-header">
+      <div class="notification-icon"></div>
+      <span class="notification-title">Calculadora Selecionada</span>
+    </div>
+    <div class="notification-body" id="notification-body"></div>
+  </div>
+
+  <script>
+    const som = document.getElementById("click-sound");
+    const notification = document.getElementById("notification");
+    const notificationBody = document.getElementById("notification-body");
+
+    function createParticles() {
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+        document.body.appendChild(particle);
+      }
+    }
+
+    createParticles();
+
+    document.querySelectorAll(".card").forEach((card, index) => {
+      card.style.animationDelay = (index * 0.1) + 's';
+
+      card.addEventListener("click", (e) => {
+        const nome = card.dataset.nome;
+        const categoria = card.dataset.categoria;
+
+        notification.classList.remove('hide');
+        notification.classList.add('show');
+        notificationBody.textContent = `${nome} | ${categoria}`;
+
+        if (som) {
+          som.currentTime = 0;
+          som.play().catch(e => console.log('Áudio bloqueado'));
+        }
+
+        setTimeout(() => {
+          notification.classList.remove('show');
+          notification.classList.add('hide');
+          setTimeout(() => {
+            notification.classList.remove('hide');
+          }, 400);
+        }, 3000);
+      });
+    });
+  </script>
+
+</body>
+</html>

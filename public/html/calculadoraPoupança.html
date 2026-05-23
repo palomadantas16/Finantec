@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Poupança</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1e3a3a 0%, #0d1f1f 100%);
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveBackground 20s linear infinite;
+}
+@keyframes moveBackground { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+.container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.header { text-align: center; margin-bottom: 40px; }
+.header h1 {
+  font-size: 42px;
+  margin-top: 32px;
+  color: #14b8a6;
+  font-weight: 800;
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+  margin-bottom: 10px;
+  animation: fadeInDown 0.8s ease;
+  font-family: "Inter", sans-serif;
+  letter-spacing: -1px;
+}
+.header p { color: #ffffff; font-size: 16px; font-weight: 500; }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+.main-card { background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%); border-radius: 20px; padding: 35px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); backdrop-filter: blur(20px); animation: fadeInUp 0.8s ease; border: 1px solid rgba(20, 184, 166, 0.15); }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.slider-section { margin-bottom: 28px; }
+.slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.slider-label span { font-weight: 700; color: #1f2937; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+.slider-value { font-size: 22px; font-weight: 800; color: #0d9488; padding: 8px 18px; background: linear-gradient(135deg, #f0fdfa, #ccfbf1); border-radius: 10px; border: 2px solid #5eead4; box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1); }
+.slider { width: 100%; height: 10px; border-radius: 8px; background: linear-gradient(to right, #0d9488 0%, #14b8a6 100%); outline: none; position: relative; cursor: pointer; transition: all 0.3s ease; }
+.slider:hover { transform: scaleY(1.2); box-shadow: 0 0 15px rgba(20, 184, 166, 0.4); }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; cursor: pointer; box-shadow: 0 3px 12px rgba(20, 184, 166, 0.5); border: 3px solid #14b8a6; transition: all 0.3s ease; }
+.slider::-webkit-slider-thumb:hover { transform: scale(1.25); box-shadow: 0 5px 20px rgba(20, 184, 166, 0.7); }
+.toggle-section { background: linear-gradient(135deg, #f0fdfa, #ccfbf1); padding: 24px; border-radius: 14px; margin-bottom: 28px; border: 2px solid #5eead4; }
+.toggle-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.toggle-header label { font-weight: 700; color: #1f2937; font-size: 15px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #d1d5db; transition: 0.4s; border-radius: 34px; }
+.switch-slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: 0.4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.switch input:checked + .switch-slider { background: linear-gradient(135deg, #0d9488, #14b8a6); }
+.switch input:checked + .switch-slider:before { transform: translateX(26px); }
+.monthly-contribution { display: none; animation: slideDown 0.3s ease; }
+.monthly-contribution.active { display: block; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+.info-box { background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 18px; border-radius: 12px; margin-bottom: 28px; border: 2px solid #fbbf24; }
+.info-box p { color: #78350f; font-size: 13px; font-weight: 600; margin: 0; line-height: 1.6; }
+.info-box strong { color: #92400e; }
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-top: 35px; transition: filter 0.3s ease; }
+.result-card { background: linear-gradient(135deg, #1f2937, #111827); padding: 26px; border-radius: 14px; text-align: center; color: white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden; border: 2px solid #374151; }
+.result-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 12px 35px rgba(20, 184, 166, 0.3); border-color: #14b8a6; }
+.result-label { font-size: 11px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; font-weight: 700; position: relative; z-index: 1; color: #9ca3af; }
+.result-value { font-size: 28px; font-weight: 800; position: relative; z-index: 1; color: #14b8a6; text-shadow: 0 0 20px rgba(20, 184, 166, 0.3); }
+.visual-chart { margin-top: 40px; background: linear-gradient(135deg, #ffffff, #f9fafb); padding: 28px; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid #e5e7eb; transition: filter 0.3s ease; }
+.visual-chart h3 { color: #1f2937; font-size: 20px; margin-bottom: 28px; text-align: center; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.comparison-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 20px; }
+.bar-container { text-align: center; }
+.bar-label-top { font-weight: 700; color: #1f2937; margin-bottom: 18px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+.bar-wrapper { height: 240px; display: flex; align-items: flex-end; justify-content: center; position: relative; }
+.bar { width: 80px; background: linear-gradient(to top, #14b8a6, #2dd4bf); border-radius: 12px 12px 0 0; position: relative; transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 -4px 18px rgba(20, 184, 166, 0.4); }
+.bar.invested { background: linear-gradient(to top, #6b7280, #9ca3af); box-shadow: 0 -4px 18px rgba(107, 114, 128, 0.3); }
+.bar-value { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); font-weight: 800; color: #1f2937; font-size: 13px; white-space: nowrap; background: white; padding: 6px 14px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.12); border: 2px solid #e5e7eb; }
+.save-button { background-color: white; color: rgb(0, 0, 0); border: none; padding: 16px 40px; font-size: 16px; font-weight: 700; border-radius: 12px; cursor: pointer; display: none; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3); transition: all 0.3s ease; font-family: 'Inter', 'Poppins', sans-serif; }
+.save-button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(20, 184, 166, 0.5); background-color: #d1d5db; }
+.button-icon { font-size: 20px; }
+.blur-effect { filter: blur(8px); pointer-events: none; user-select: none; }
+#login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+.overlay-content { background: #ffffff; color: #333; padding: 40px; border-radius: 20px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.overlay-content h2 { color: #047857; font-size: 28px; margin-bottom: 15px; }
+.overlay-content p { font-size: 16px; margin-bottom: 30px; line-height: 1.6; }
+.overlay-buttons { display: flex; flex-direction: column; gap: 15px; }
+.overlay-buttons a { padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; transition: transform 0.2s ease; display: block; }
+.overlay-buttons a:hover { transform: scale(1.03); }
+.btn-login { background: linear-gradient(145deg, #14b8a6, #047857); color: #fff; }
+.btn-register { background-color: #f0f0f0; color: #333; border: 1px solid #ddd; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><img src="../img/coin-flip-59.gif" alt="" style="width: 35px; height: 35px; margin-right: 10px;">CALCULADORA DE POUPANÇA:</h1>
+      <p>Simule seus rendimentos na Caderneta de Poupança</p>
+    </div>
+    <div class="main-card">
+      <div class="slider-section">
+        <div class="slider-label"><span>Capital Inicial</span><div class="slider-value" id="principalValue">R$ 10.000,00</div></div>
+        <input type="range" min="100" max="100000" value="10000" step="500" class="slider" id="principalSlider">
+      </div>
+      <div class="slider-section">
+        <div class="slider-label"><span>Taxa Selic Anual</span><div class="slider-value" id="selicValue">13.75%</div></div>
+        <input type="range" min="2" max="15" value="13.75" step="0.25" class="slider" id="selicSlider">
+      </div>
+      <div class="slider-section">
+        <div class="slider-label"><span>Período</span><div class="slider-value" id="timeValue">2 anos</div></div>
+        <input type="range" min="1" max="30" value="2" step="1" class="slider" id="timeSlider">
+      </div>
+      <div class="toggle-section">
+        <div class="toggle-header"><label><span>Depósitos Mensais</span></label><label class="switch"><input type="checkbox" id="monthlyToggle"><span class="switch-slider"></span></label></div>
+        <div class="monthly-contribution" id="monthlySection">
+          <div class="slider-label"><span>Valor Mensal</span><div class="slider-value" id="monthlyValue">R$ 500,00</div></div>
+          <input type="range" min="50" max="5000" value="500" step="50" class="slider" id="monthlySlider">
+        </div>
+      </div>
+      <div class="info-box"><p>ℹ️ <strong>Regra da Poupança:</strong> Se Selic &gt; 8,5%: rende 0,5% ao mês + TR. Se Selic ≤ 8,5%: rende 70% da Selic + TR. <strong>Isento de IR</strong>.</p></div>
+      <div class="results">
+        <div class="result-card"><div class="result-label">Saldo Final</div><div class="result-value" id="totalResult">R$ 0,00</div></div>
+        <div class="result-card"><div class="result-label">Rendimento Total</div><div class="result-value" id="profitResult">R$ 0,00</div></div>
+        <div class="result-card"><div class="result-label">Rentabilidade</div><div class="result-value" id="roiResult">0%</div></div>
+      </div>
+      <div class="visual-chart">
+        <h3>Depositado vs Saldo Final</h3>
+        <div class="comparison-bars">
+          <div class="bar-container"><div class="bar-label-top">Total Depositado</div><div class="bar-wrapper"><div class="bar invested" id="investedBar"><div class="bar-value" id="investedValue">R$ 0,00</div></div></div></div>
+          <div class="bar-container"><div class="bar-label-top">Saldo Final</div><div class="bar-wrapper"><div class="bar" id="totalBar"><div class="bar-value" id="totalBarValue">R$ 0,00</div></div></div></div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 30px;"><button id="saveSimulation" class="save-button"><span class="button-icon">💾</span> Salvar Simulação</button></div>
+    </div>
+  </div>
+
+  <div id="login-overlay">
+    <div class="overlay-content">
+      
+      <p>Faça login ou crie sua conta para ver o resultado detalhado e salvar seus cálculos no histórico.</p>
+      <div class="overlay-buttons">
+        <a href="../html/loginCadastroNOVO.html" class="btn-login">Fazer Login</a>
+        <a href="../html/loginCadastroNOVO.html#cadastro" class="btn-register">Criar Conta Grátis</a>
+      </div>
+    </div>
+  </div>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- ELEMENTOS DO DOM ---
+    const principalSlider = document.getElementById('principalSlider');
+    const selicSlider = document.getElementById('selicSlider');
+    const timeSlider = document.getElementById('timeSlider');
+    const monthlyToggle = document.getElementById('monthlyToggle');
+    const monthlySlider = document.getElementById('monthlySlider');
+    const monthlySection = document.getElementById('monthlySection');
+    const saveButton = document.getElementById('saveSimulation');
+    let ultimoCalculo = null;
+
+    // --- FUNÇÕES AUXILIARES ---
+    function formatCurrency(value) {
+        return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculateSavingsRate(selic) {
+        if (selic > 8.5) {
+            return 0.005 * 12; // Retorna taxa anual de 6% (0.5% ao mês)
+        } else {
+            return (selic / 100) * 0.70; // Retorna 70% da Selic
+        }
+    }
+
+    function showLoginOverlay() {
+        document.querySelector('.results').classList.add('blur-effect');
+        document.querySelector('.visual-chart').classList.add('blur-effect');
+        document.getElementById('login-overlay').style.display = 'flex';
+    }
+
+    function hideLoginOverlay() {
+        document.querySelector('.results').classList.remove('blur-effect');
+        document.querySelector('.visual-chart').classList.remove('blur-effect');
+        document.getElementById('login-overlay').style.display = 'none';
+    }
+
+    // --- FUNÇÃO PRINCIPAL DE CÁLCULO E EXIBIÇÃO ---
+    function calculateAndDisplay() {
+        const principal = parseFloat(principalSlider.value);
+        const selic = parseFloat(selicSlider.value);
+        const timeInYears = parseFloat(timeSlider.value);
+        const includeMonthly = monthlyToggle.checked;
+        const monthlyContribution = includeMonthly ? parseFloat(monthlySlider.value) : 0;
+        
+        const annualRate = calculateSavingsRate(selic);
+        
+        const futureValuePrincipal = principal * Math.pow(1 + annualRate, timeInYears);
+        
+        let futureValueMonthly = 0;
+        if (includeMonthly) {
+            const monthlyRate = Math.pow(1 + annualRate, 1/12) - 1;
+            const months = timeInYears * 12;
+            if (monthlyRate > 0) {
+              futureValueMonthly = monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            } else {
+              futureValueMonthly = monthlyContribution * months;
+            }
+        }
+        
+        const totalInvested = principal + (monthlyContribution * 12 * timeInYears);
+        const totalValue = futureValuePrincipal + futureValueMonthly;
+        const profit = totalValue - totalInvested;
+        const roi = totalInvested > 0 ? (profit / totalInvested) * 100 : 0;
+
+        const token = localStorage.getItem('token');
+        hideLoginOverlay();
+
+        if (token) {
+            document.getElementById('totalResult').textContent = formatCurrency(totalValue);
+            document.getElementById('profitResult').textContent = formatCurrency(profit);
+            document.getElementById('roiResult').textContent = roi.toFixed(1) + '%';
+
+            const maxHeight = 240;
+            const totalBarHeight = totalValue > 0 ? maxHeight : 0;
+            const investedBarHeight = totalValue > 0 ? (totalInvested / totalValue) * maxHeight : 0;
+
+            document.getElementById('investedBar').style.height = `${investedBarHeight}px`;
+            document.getElementById('totalBar').style.height = `${totalBarHeight}px`;
+            document.getElementById('investedValue').textContent = formatCurrency(totalInvested);
+            document.getElementById('totalBarValue').textContent = formatCurrency(totalValue);
+
+            ultimoCalculo = { tipo_calculo: 'Poupança', valor_principal: principal, taxa_juros: selic, tempo: timeInYears, resultado: totalValue };
+            saveButton.style.display = 'inline-flex';
+        } else {
+            document.getElementById('totalResult').textContent = 'R$ --,--';
+            document.getElementById('profitResult').textContent = 'R$ --,--';
+            document.getElementById('roiResult').textContent = '--%';
+            document.getElementById('investedBar').style.height = '10px';
+            document.getElementById('totalBar').style.height = '10px';
+            document.getElementById('investedValue').textContent = 'R$ --,--';
+            document.getElementById('totalBarValue').textContent = 'R$ --,--';
+            saveButton.style.display = 'none';
+            showLoginOverlay();
+        }
+    }
+
+    // --- EVENT LISTENERS ---
+    function updateUIAndRecalculate() {
+        document.getElementById('principalValue').textContent = formatCurrency(parseFloat(principalSlider.value));
+        document.getElementById('selicValue').textContent = parseFloat(selicSlider.value).toFixed(2) + '%';
+        const years = timeSlider.value;
+        document.getElementById('timeValue').textContent = years + (years == 1 ? ' ano' : ' anos');
+        document.getElementById('monthlyValue').textContent = formatCurrency(parseFloat(monthlySlider.value));
+        calculateAndDisplay();
+    }
+
+    [principalSlider, selicSlider, timeSlider, monthlySlider].forEach(slider => {
+        slider.addEventListener('input', updateUIAndRecalculate);
+    });
+
+    monthlyToggle.addEventListener('change', () => {
+        monthlySection.classList.toggle('active', monthlyToggle.checked);
+        updateUIAndRecalculate();
+    });
+
+    saveButton.addEventListener('click', async () => {
+        if (!ultimoCalculo) return;
+        const token = localStorage.getItem('token');
+        if (!token) return alert('Você precisa estar logado para salvar!');
+        
+        try {
+            const res = await fetch('/api/calculadora/historico', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify(ultimoCalculo)
+            });
+            if (res.ok) {
+                alert('Simulação salva com sucesso!');
+                saveButton.style.display = 'none';
+                ultimoCalculo = null;
+            } else {
+                throw new Error('Falha ao salvar a simulação.');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar:', error);
+            alert(error.message);
+        }
+    });
+
+    // --- CÁLCULO INICIAL ---
+    updateUIAndRecalculate();
+});
+</script>
+</body>
+</html>

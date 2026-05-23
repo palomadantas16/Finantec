@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+</head>
+<body>
+    <style>
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #e6f4ea;
+      display: flex;
+      min-height: 100vh;
+      color: #1c1c1c;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background: #006c19;
+      padding: 30px 25px;
+      border-radius: 0 20px 20px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 5px 0 15px rgba(30, 127, 52, 0.3);
+      z-index: 1000;
+    }
+
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      user-select: none;
+      font-family: "Press Start 2P", system-ui;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar .logo img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    nav {
+      margin-top: 80px;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    nav a i {
+      min-width: 20px;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      background-color: #2f9e48;
+      box-shadow: 0 0 12px #2f9e48;
+      color: #d0f1d4;
+    }
+
+    nav a.active {
+      background-color: #146627;
+      box-shadow: 0 0 20px #146627;
+      font-weight: 700;
+    }
+
+    .calculadora-container {
+      position: relative;
+    }
+
+    .calculadora-btn,
+    .historico-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .historico-btn {
+      display: none;
+      background: #6dad6d;
+      margin-left: 20px;
+    }
+
+    .calculadora-container:hover .historico-btn {
+      display: flex;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dropdown-toggle:hover {
+      background-color: #2f9e48;
+      box-shadow: 0 0 12px #2f9e48;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 400px;
+      background: #4f4f4f;
+      border-radius: 12px;
+      padding: 10px;
+      list-style: none;
+      margin: 0 0 0 10px;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: all 0.18s ease;
+      z-index: 2000;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+
+    .dropdown.open .dropdown-menu {
+      transform: scaleX(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 15px;
+      color: white;
+      text-decoration: none;
+      transition: background 0.25s;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .dropdown-item:hover {
+      background-color: #2f9e48;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+
+    .socials a img.social-img {
+      max-width: 200px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .socials a img.social-img:hover {
+      transform: scale(1.05);
+    }
+
+
+    .calendar-container {
+      width: 100%;
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 50px; /* Reduzido para melhor visualização */
+      margin-bottom: 50px;
+      margin-right: 50px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+      margin-left: 320px; /* Ajustado para não sobrepor a sidebar */
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .calendar-header h2 {
+      font-size: 24px;
+      margin: 0;
+      color: #333;
+      text-transform: capitalize;
+    }
+
+    .arrow {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .arrow:hover {
+      background: #45a049;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      opacity: 1;
+      transition: all 0.6s ease;
+    }
+
+    .day {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 10px 5px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .day.other-month {
+        background: #fafafa;
+        color: #ccc;
+    }
+
+    .buttons {
+      margin-top: 5px;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+    
+    .day:hover .buttons {
+        opacity: 1;
+    }
+
+    .buttons button {
+      padding: 2px 6px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .btn-plus { background: #4CAF50; color: white; }
+    .btn-minus { background: #f44336; color: white; }
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #444;
+    }
+    
+    .event-dots {
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        margin-top: 5px;
+        min-height: 10px;
+    }
+
+    .event-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+    .event-dot.renda { background-color: #22c55e; }
+    .event-dot.despesa { background-color: #ef4444; }
+
+    /* --- CSS PARA OS MODAIS --- */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
+        z-index: 4000;
+        justify-content: center;
+        align-items: center;
+    }
+    .overlay-content {
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        width: 400px;
+        max-width: 90%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .input-box {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    .input-box label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    .input-box input, .input-box select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    .saveBtn, .closeBtn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    .saveBtn { background: #4CAF50; color: white; }
+    .closeBtn { background: #6b7280; color: white; }
+
+    </style>
+
+    <div id="sidebar-container">
+        <div class="sidebar">
+            <div class="logo"><a href="../html/home.html"><img src="../img/coin-flip-59.gif" alt="" style="width: 40px; height: 40px;"></a>Finantec</div>
+            <nav>
+              <a href="../html/sistemaInicial.html"><i class="fas fa-signal"></i>Inicial</a>
+              <a href="../html/pagRenda.html"><i class="fas fa-th-large"></i>Rendas</a>
+              <a href="../html/pagDespesas.html"><i class="fas fa-shopping-cart"></i>Despesas</a>
+              <a href="../html/calendario.html" class="active"><i class="fas fa-calendar"></i>Calendário</a>
+          <div class="calculadora-container">
+                <a href="tiposCalcula.html" class="calculadora-btn">
+                  <i class="fas fa-calculator"></i> Calculadoras
+                </a>
+                <a href="historico.html" class="historico-btn">
+                  <i class="fas fa-clock"></i> Histórico
+                </a>
+              </div>
+            <div class="dropdown">
+          <div class="dropdown-toggle">
+            <i class="fas fa-book"></i>Estude sobre<i class="fas fa-caret-down" style="margin-left: 5px;"></i>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="../html/informativaAções.html">Acoes</a></li>
+            <li><a class="dropdown-item" href="../html/informativaCDB.html">CDB</a></li>
+            <li><a class="dropdown-item" href="../html/informativaCDI.html">CDI</a></li>
+            <li><a class="dropdown-item" href="../html/informativaFI.html">F.I</a></li>
+            <li><a class="dropdown-item" href="../html/informativaLCI_LCA.html">LCA e LCI</a></li>
+            <li><a class="dropdown-item" href="../html/informativaPoupança.html">Poupança</a></li>
+            <li><a class="dropdown-item" href="../html/informativaTesouro.html">Tesouro Direto</a></li>
+            <li><a class="dropdown-item" href="../html/informativaCC.html">Criptomoedas</a></li>
+          </ul>
+        </div>
+            </nav>
+        
+               <div class="socials">
+              <a href="../jogo/indexJJ.html" target="_blank" title="Jogar">
+                <img src="../img/botaJogar.png" alt="Jogar" class="social-img" />
+              </a>
+            </div>
+          </div>
+    </div>
+
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button class="arrow" id="prev">&#8592;</button>
+      <h2 id="month-year"></h2>
+      <button class="arrow" id="next">&#8594;</button>
+    </div>
+    <div class="weekdays">
+      <div>Dom</div> <div>Seg</div> <div>Ter</div> <div>Qua</div> <div>Qui</div> <div>Sex</div> <div>Sáb</div>
+    </div>
+    <div class="days" id="days"></div>
+  </div>
+
+  <div id="overlayRenda" class="overlay">
+    <div class="overlay-content">
+      <h2>Adicionar Renda</h2>
+      <div class="input-box">
+        <label for="rendaValor">Valor</label>
+        <input type="number" id="rendaValor" placeholder="R$ 0,00">
+      </div>
+      <div class="input-box">
+        <label for="rendaDescricao">Descrição</label>
+        <input type="text" id="rendaDescricao" placeholder="Ex: Salário">
+        <input type="hidden" id="rendaData">
+      </div>
+      <button class="saveBtn" id="salvarRendaBtn">Salvar</button>
+      <button class="closeBtn" onclick="document.getElementById('overlayRenda').style.display='none'">Fechar</button>
+    </div>
+  </div>
+
+  <div id="overlayDespesa" class="overlay">
+    <div class="overlay-content">
+      <h2>Adicionar Despesa</h2>
+      <div class="input-box">
+        <label for="despesaValor">Valor</label>
+        <input type="number" id="despesaValor" placeholder="R$ 0,00">
+      </div>
+      <div class="input-box">
+        <label for="despesaDescricao">Descrição</label>
+        <input type="text" id="despesaDescricao" placeholder="Ex: Aluguel">
+      </div>
+      <div class="input-box">
+        <label for="despesaCategoriaSelect">Categoria</label>
+        <select id="despesaCategoriaSelect"></select>
+        <input type="hidden" id="despesaData">
+      </div>
+      <button class="saveBtn" id="salvarDespesaBtn">Salvar</button>
+      <button class="closeBtn" onclick="document.getElementById('overlayDespesa').style.display='none'">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. AUTENTICAÇÃO E CONFIGURAÇÃO DA API ---
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'paginaloginCadastro.html';
+            return;
+        }
+
+        const fetchOptions = {
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+        };
+
+        const apiRequest = async (url, options = {}) => {
+            const response = await fetch(url, { ...fetchOptions, ...options });
+            if (response.status === 401) { // Token inválido ou expirado
+                localStorage.removeItem('token');
+                window.location.href = 'paginaLogin.html';
+            }
+            if (!response.ok) throw new Error('Falha na requisição');
+            return response.json();
+        };
+
+        // --- 2. ELEMENTOS DO DOM ---
+        const monthYearEl = document.getElementById('month-year');
+        const daysEl = document.getElementById('days');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const overlayRenda = document.getElementById('overlayRenda');
+        const overlayDespesa = document.getElementById('overlayDespesa');
+        
+        let currentDate = new Date();
+        currentDate.setDate(1);
+
+        // --- 3. FUNÇÃO PRINCIPAL DE RENDERIZAÇÃO ---
+        async function renderCalendar() {
+            daysEl.innerHTML = 'Carregando...';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            monthYearEl.textContent = `${currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' })}`;
+            
+            const eventos = await apiRequest(`/api/eventos/calendario?ano=${year}&mes=${month + 1}`);
+            const eventosPorDia = eventos.reduce((acc, evento) => {
+                const dia = new Date(evento.data).getUTCDate();
+                if (!acc[dia]) acc[dia] = [];
+                acc[dia].push(evento);
+                return acc;
+            }, {});
+
+            daysEl.innerHTML = '';
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                daysEl.innerHTML += '<div class="day other-month"></div>';
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayEl = document.createElement('div');
+                dayEl.classList.add('day');
+                
+                const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                
+                dayEl.innerHTML = `
+                    <span>${i}</span>
+                    <div class="event-dots" id="dots-${i}"></div>
+                    <div class="buttons">
+                        <button class="btn-plus" data-date="${fullDate}">+</button>
+                        <button class="btn-minus" data-date="${fullDate}">-</button>
+                    </div>
+                `;
+                daysEl.appendChild(dayEl);
+
+                if (eventosPorDia[i]) {
+                    const dotsContainer = dayEl.querySelector(`#dots-${i}`);
+                    eventosPorDia[i].forEach(evento => {
+                        const dot = document.createElement('div');
+                        dot.classList.add('event-dot', evento.tipo);
+                        dot.title = `${evento.tipo.toUpperCase()}: ${evento.descricao} (R$ ${evento.valor})`;
+                        dotsContainer.appendChild(dot);
+                    });
+                }
+            }
+        }
+
+        // Delegação de eventos para os botões "+" e "-"
+        daysEl.addEventListener('click', e => {
+            if (e.target.classList.contains('btn-plus')) {
+                document.getElementById('rendaValor').value = '';
+                document.getElementById('rendaDescricao').value = '';
+                document.getElementById('rendaData').value = e.target.dataset.date;
+                overlayRenda.style.display = 'flex';
+            }
+            if (e.target.classList.contains('btn-minus')) {
+                document.getElementById('despesaValor').value = '';
+                document.getElementById('despesaDescricao').value = '';
+                document.getElementById('despesaData').value = e.target.dataset.date;
+                carregarCategoriasDespesa();
+                overlayDespesa.style.display = 'flex';
+            }
+        });
+        // --- 4. EVENT LISTENERS ---
+        prevBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // Delegação de eventos para os botões "+" e "-"
+        daysEl.addEventListener('click', e => {
+            if (e.target.classList.contains('btn-plus')) {
+                document.getElementById('rendaForm').reset();
+                document.getElementById('rendaData').value = e.target.dataset.date;
+                overlayRenda.style.display = 'flex';
+            }
+            if (e.target.classList.contains('btn-minus')) {
+                document.getElementById('despesaForm').reset();
+                document.getElementById('despesaData').value = e.target.dataset.date;
+                carregarCategoriasDespesa();
+                overlayDespesa.style.display = 'flex';
+            }
+        });
+
+        document.getElementById('salvarRendaBtn').addEventListener('click', async () => {
+            const data = {
+                valor: document.getElementById('rendaValor').value,
+                descricao: document.getElementById('rendaDescricao').value,
+                data_recebimento: document.getElementById('rendaData').value
+            };
+            if (!data.valor || !data.descricao) return alert('Preencha todos os campos.');
+            await apiRequest('/api/rendas', { method: 'POST', body: JSON.stringify(data) });
+            overlayRenda.style.display = 'none';
+            renderCalendar();
+        });
+
+        document.getElementById('salvarDespesaBtn').addEventListener('click', async () => {
+            const data = {
+                valor: document.getElementById('despesaValor').value,
+                descricao: document.getElementById('despesaDescricao').value,
+                data_despesa: document.getElementById('despesaData').value,
+                id_categoria: document.getElementById('despesaCategoriaSelect').value
+            };
+            if (!data.valor || !data.descricao || !data.id_categoria) return alert('Preencha todos os campos.');
+            await apiRequest('/api/despesas', { method: 'POST', body: JSON.stringify(data) });
+            overlayDespesa.style.display = 'none';
+            renderCalendar();
+        });
+        
+        // --- 5. FUNÇÕES AUXILIARES E INICIALIZAÇÃO DA SIDEBAR ---
+        async function carregarCategoriasDespesa() {
+            try {
+                const categorias = await apiRequest('/api/despesas/categorias');
+                const select = document.getElementById('despesaCategoriaSelect');
+                select.innerHTML = '<option value="">Selecione...</option>';
+                categorias.forEach(cat => {
+                    select.innerHTML += `<option value="${cat.id_categoria}">${cat.nome}</option>`;
+                });
+            } catch (error) {
+                console.error("Erro ao carregar categorias:", error);
+                alert("Não foi possível carregar as categorias de despesa.");
+            }
+        }
+        
+        // Lógica da Sidebar
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggle.closest('.dropdown').classList.toggle('open');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown.open').forEach(drop => drop.classList.remove('open'));
+            }
+        });
+
+        // --- 6. INICIALIZAÇÃO ---
+        renderCalendar();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Admin - FINANTEC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="../css/styleAdmin.css"> </head>
+<body>
+    <div id="notification" class="notification"></div>
+
+    <header>
+        <h1><img src="../img/coin-flip-59.gif" alt="" style="width: 40px; height: 40px; margin-right: 15px; vertical-align: middle;">Painel de Administração</h1>
+        <div class="header-user">
+            <span>Bem-vindo, <span id="adminName">Admin</span>!</span>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <nav>
+        <button id="btn-usuarios" class="nav-btn">Gerenciar Usuários</button>
+        <button id="btn-conteudos" class="nav-btn">Editar Conteúdos</button>
+        <button id="btn-jogos" class="nav-btn">Gerenciar Jogos</button>
+        <button id="btn-preview" class="nav-btn">Navegar no Site</button>
+    </nav>
+
+    <main>
+        <section id="usuariosSection">
+            <h2>Gerenciar Usuários</h2>
+            <table>
+                <thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>Tipo</th><th>Ação</th></tr></thead>
+                <tbody id="usuariosTable"></tbody>
+            </table>
+        </section>
+
+        <section id="conteudosSection" style="display:none;">
+            <h2>Editar Conteúdos do Site</h2>
+            <form id="formConteudoAdmin">
+                <input type="hidden" id="conteudoId">
+                <label>Selecione a Seção para Editar:<select id="conteudoSelect"><option>Carregando...</option></select></label>
+                <label>Título da Seção:<input id="conteudoTitulo" type="text" placeholder="Título da seção"></label>
+                <label>Texto Principal:</label>
+                <textarea id="conteudoTexto" rows="6"></textarea>
+                <button type="submit" class="salvar">Salvar Conteúdo</button>
+            </form>
+        </section>
+
+        <section id="jogosSection" style="display:none;">
+            <h2>Gerenciar Conteúdo dos Jogos</h2>
+            <div class="game-management-area">
+                <div class="game-header">
+                    <h3>Quiz</h3>
+                    <button class="add-new-btn" id="add-quiz-btn"><i class="fas fa-plus"></i> Adicionar Pergunta</button>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Nível</th><th>Pergunta</th><th>Ações</th></tr></thead>
+                    <tbody id="quiz-table-body"></tbody>
+                </table>
+            </div>
+            <div class="game-management-area">
+                <div class="game-header">
+                    <h3>Jogo da Forca</h3>
+                    <button class="add-new-btn" id="add-forca-btn"><i class="fas fa-plus"></i> Adicionar Palavra</button>
+                </div>
+                <table class="admin-table">
+                    <thead><tr><th>Palavra</th><th>Dica</th><th>Ações</th></tr></thead>
+                    <tbody id="forca-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="previewSection" style="display:none;">
+            <h2>Navegar pelo site</h2>
+            <div style="display:flex; gap:12px; margin-bottom:16px;">
+                <input id="urlPreview" type="text" value="../html/home.html">
+                <button type="button" class="salvar" onclick="document.getElementById('iframePreview').src=document.getElementById('urlPreview').value">Abrir</button>
+            </div>
+            <iframe id="iframePreview" src="../html/home.html"></iframe>
+        </section>
+    </main>
+
+    <div class="overlay" id="quiz-modal">
+        <div class="overlay-content">
+            <h3 id="quiz-modal-title">Adicionar Pergunta</h3>
+            <form id="quiz-form">
+                <input type="hidden" id="quiz-id">
+                <div class="input-box"><label>Pergunta:</label><input type="text" id="quiz-pergunta" required></div>
+                <div class="input-box"><label>Nível:</label><input type="number" id="quiz-nivel" min="1" required></div>
+                <div class="input-box"><label>Pontos:</label><input type="number" id="quiz-pontos" min="1" required></div>
+                <h4>Opções (Marque a correta):</h4>
+                <div class="input-box option-group"><input type="radio" name="correct-option" value="0" checked> <input type="text" id="quiz-opt1" placeholder="Opção 1" required></div>
+                <div class="input-box option-group"><input type="radio" name="correct-option" value="1"> <input type="text" id="quiz-opt2" placeholder="Opção 2" required></div>
+                <div class="input-box option-group"><input type="radio" name="correct-option" value="2"> <input type="text" id="quiz-opt3" placeholder="Opção 3" required></div>
+                <div class="input-box option-group"><input type="radio" name="correct-option" value="3"> <input type="text" id="quiz-opt4" placeholder="Opção 4" required></div>
+                <button type="submit" class="salvar">Salvar</button>
+                <button type="button" class="closeBtn">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="overlay" id="forca-modal">
+        <div class="overlay-content">
+            <h3 id="forca-modal-title">Adicionar Palavra</h3>
+            <form id="forca-form">
+                <input type="hidden" id="forca-id">
+                <div class="input-box"><label>Palavra:</label><input type="text" id="forca-palavra" required></div>
+                <div class="input-box"><label>Dica:</label><input type="text" id="forca-dica" required></div>
+                <button type="submit" class="salvar">Salvar</button>
+                <button type="button" class="closeBtn">Cancelar</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="../js/admin.js"></script>
+</body>
+</html>

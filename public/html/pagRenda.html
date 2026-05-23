@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINANTEC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+</head>
+<body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background: #e6f4ea;
+        display: flex;
+        min-height: 100vh;
+        color: #005a0d;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+     .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background: #1e7f34;
+      padding: 30px 25px;
+      border-radius: 0 20px 20px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 5px 0 15px rgba(30, 127, 52, 0.3);
+      z-index: 1000;
+    }
+
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      user-select: none;
+      font-family: "Press Start 2P", system-ui;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar .logo img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+      nav {
+      
+        margin-top: 80px;
+
+      }
+
+      nav a {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 17px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: inset 0 0 0 transparent;
+        cursor: pointer;
+      }
+
+      nav a i {
+        min-width: 20px;
+        font-size: 18px;
+      }
+
+      nav a:hover {
+        background-color: #2f9e48;
+        box-shadow: 0 0 12px #2f9e48;
+        color: #d0f1d4;
+      }
+
+      nav a.active {
+        background-color: #146627;
+        box-shadow: 0 0 20px #146627;
+        font-weight: 700;
+        color: #c6eec1;
+      }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .calculadora-container {
+      display: block;
+      position: relative;
+      width: 100%;
+    }
+
+    .calculadora-btn,
+    .historico-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .historico-btn {
+      display: none;
+      background: #6dad6d;
+      margin-left: 20px;
+    }
+
+    .calculadora-container:hover .historico-btn {
+      display: flex;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dropdown-toggle:hover {
+      background-color: #2f9e48;
+      box-shadow: 0 0 12px #2f9e48;
+      color: #d0f1d4;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 400px;  /* Largura fixa para 2 colunas */
+      background: #4f4f4f;
+      border-radius: 12px;
+      padding: 10px;
+      list-style: none;
+      margin: 0 0 0 10px;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: all 0.18s ease;
+      z-index: 2000;
+      pointer-events: none;
+      
+      /* Grid de 2 colunas */
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+
+    .dropdown.open .dropdown-menu {
+      transform: scaleX(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 15px;
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.25s;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .dropdown-item:hover {
+      background-color: #2f9e48;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+
+    .socials a img.social-img {
+      max-width: 200px;
+      height: auto;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    .socials a img.social-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+    }
+
+    .content {
+        flex: 1;
+        padding: 30px;
+        margin-left: 280px;
+    }
+
+    h1 {
+        color: #004f00;
+        margin-top: 30px;
+    }
+
+    /* Estilo para a seção de Renda Fixa */
+    .fixed-income-section {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .fixed-income-section h2 {
+        color: #004f00;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+    .fixed-income-section p {
+        font-size: 1.5em;
+        font-weight: 600;
+        color: #067b0f;
+    }
+    
+    .expense-list {
+        margin-top: 30px;
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+     .expense-list h2 {
+        color: #004f00;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+        border-bottom: 2px solid #e6f4ea;
+        padding-bottom: 10px;
+    }
+
+    .expense-item {
+        display: grid;
+        grid-template-columns: 8px 1fr 100px 40px; 
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .expense-item .descricao {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .expense-item .categoria {
+        font-weight: 700;
+    }
+    
+    .descricao span:nth-child(2) {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .expense-item .valor {
+        text-align: right;
+        font-weight: 600;
+    }
+
+    .expense-item:last-child {
+        border-bottom: none;
+    }
+
+    .add-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #067b0f;
+        color: #fff;
+        border: none;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+
+    .add-btn:hover {
+        background: #006715;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+
+    .overlay.active {
+        display: flex;
+    }
+
+    .overlay-content {
+        background: #fff;
+        padding: 30px;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
+
+    }
+
+    .overlay-content input {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-size: 15px;
+        width: 100%;
+        gap: 12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .overlay-content button {
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: #005c03;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        width: 160px;
+        margin-left: 6px;
+    }
+
+    .overlay-content button:hover {
+        background: #53ab6a;
+    }
+
+    .delete-icon {
+        color: #b60000;
+        cursor: pointer;
+        font-size: 18px;
+        transition: transform 0.2s, color 0.2s;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    .delete-icon:hover {
+        color: #ff0000;
+        transform: scale(1.2);
+    }
+    
+    a, a:visited {
+      color: inherit;         
+      text-decoration: none;   
+    }
+</style>
+
+<div class="sidebar">
+    <div>
+        <div class="logo">
+            <a href="homePage.html"><img src="../img/coin-flip-59.gif" alt="Logo Finantec"></a>Finantec
+        </div>
+        <nav>
+            <a href="../html/sistemaInicial.html"><i class="fas fa-signal"></i>Inicial</a>
+            <a href="../html/pagRenda.html" class="active"><i class="fas fa-th-large"></i>Rendas</a>
+            <a href="../html/pagDespesas.html"><i class="fas fa-shopping-cart"></i>Despesas</a>
+            <a href="../html/calendario.html"><i class="fas fa-calendar"></i>Calendário</a>
+            <div class="calculadora-container">
+                <a href="tiposCalcula.html" class="calculadora-btn">
+                  <i class="fas fa-calculator"></i> Calculadoras
+                </a>
+                <a href="historico.html" class="historico-btn">
+                  <i class="fas fa-clock"></i> Histórico
+                </a>
+            </div>
+            <div class="dropdown">
+                <div class="dropdown-toggle">
+                    <i class="fas fa-book"></i>Estude sobre<i class="fas fa-caret-down"></i>
+                </div>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="../html/informativaAcoes.html">Ações</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaCDB.html">CDB</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaCDI.html">CDI</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaFI.html">F.I</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaLCI_LCA.html">LCA e LCI</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaPoupança.html">Poupança</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaTesouro.html">Tesouro Direto</a></li>
+                    <li><a class="dropdown-item" href="../html/informativaCC.html">Criptomoedas</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+   <div class="socials">
+      <a href="../jogo/indexJJ.html" target="_blank" title="Jogar">
+        <img src="../img/botaJogar.png" alt="Jogar" class="social-img" />
+      </a>
+    </div>
+</div>
+
+<div class="content">
+    <h1>Minhas Rendas</h1>
+    
+    <div class="fixed-income-section">
+        <h2>Renda Fixa Mensal</h2>
+        <p id="rendaFixaValor">R$ 0,00</p>
+    </div>
+
+    <div class="expense-list">
+        <h2>Rendas Variáveis</h2>
+        <div id="incomeList">
+             <p>Carregando suas rendas...</p>
+        </div>
+    </div>
+</div>
+
+<button class="add-btn" id="btnAdd">+</button>
+
+<div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <h2>Adicionar Renda Variável</h2>
+        <form id="rendaForm">
+            <div class="input-group">
+                <label for="valor">Valor (R$)</label>
+                <input type="number" id="valor" placeholder="0.00" required step="0.01">
+            </div>
+            <div class="input-group">
+                <label for="data">Data</label>
+                <input type="date" id="data" required>
+            </div>
+            <div class="input-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" placeholder="Ex: Salário, Freelance, Venda" required>
+            </div>
+            <div class="button-group">
+                <button type="button" id="cancelarAddRenda" class="cancel-btn">Cancelar</button>
+                <button type="button" id="salvarRenda" class="save-btn">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. VALIDAÇÃO DO TOKEN E CONFIGURAÇÃO DA API
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'paginaLogin.html';
+        return;
+    }
+
+    const API_BASE_URL = 'http://localhost:5000';
+
+    const apiRequest = async (endpoint, options = {}) => {
+        const defaultOptions = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...defaultOptions, ...options });
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'paginaLogin.html';
+            throw new Error('Não autorizado');
+        }
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido na API' }));
+            throw new Error(errorData.message);
+        }
+        
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return response.json();
+        }
+        return {};
+    };
+
+    // 2. ELEMENTOS DO DOM
+    const incomeList = document.getElementById("incomeList");
+    const rendaFixaValorEl = document.getElementById("rendaFixaValor");
+    const overlay = document.getElementById("overlay");
+    const btnAdd = document.getElementById("btnAdd");
+    const salvarRendaBtn = document.getElementById("salvarRenda");
+    const rendaForm = document.getElementById("rendaForm");
+    const cancelarBtn = document.getElementById("cancelarAddRenda");
+
+    // 3. FUNÇÕES DE LÓGICA E RENDERIZAÇÃO
+    const formatarMoeda = (valor) => `R$ ${parseFloat(valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    const formatarData = (dataISO) => new Date(dataISO).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+    /**
+     * ##### CORREÇÃO APLICADA AQUI #####
+     * Carrega os dados do dashboard (que incluem a renda mensal) e atualiza o campo.
+     */
+    const carregarRendaFixa = async () => {
+        try {
+            // Busca os dados do dashboard financeiro
+            const data = await apiRequest('/api/usuarios/financeiro-dashboard');
+            // Usa a propriedade 'renda' da resposta para preencher o campo
+            rendaFixaValorEl.textContent = formatarMoeda(data.renda);
+        } catch (error) {
+            console.error("Erro ao carregar renda fixa:", error);
+            rendaFixaValorEl.textContent = "Erro ao carregar";
+        }
+    };
+
+    // Renderiza um único item de renda variável na lista
+    const renderizarItemRenda = (renda) => {
+        const item = document.createElement("div");
+        item.classList.add("expense-item");
+        
+        // Não mostra transações automáticas de metas
+        if (renda.descricao && renda.descricao.toLowerCase().includes('retirada da meta')) {
+            return; 
+        }
+
+        item.innerHTML = `
+            <div style="background:#067b0f; height:100%; border-radius:4px;"></div>
+            <div class="descricao">
+                <span>${renda.descricao || 'Renda Variável'}</span>
+                <span class="categoria">${formatarData(renda.data_recebimento)}</span>
+            </div>
+            <div class="valor">${formatarMoeda(renda.valor)}</div>
+            <i class="fas fa-trash delete-icon" data-id="${renda.id_renda}"></i>
+        `;
+        incomeList.appendChild(item);
+    };
+
+    // Carrega todas as rendas variáveis da API e as renderiza
+    const carregarRendasVariaveis = async () => {
+        incomeList.innerHTML = "<p>Carregando rendas variáveis...</p>";
+        try {
+            const rendas = await apiRequest('/api/rendas');
+            incomeList.innerHTML = "";
+            const rendasVariaveis = rendas.filter(r => !r.descricao || !r.descricao.toLowerCase().includes('retirada da meta'));
+            
+            if (rendasVariaveis.length === 0) {
+                incomeList.innerHTML = "<p>Nenhuma renda variável adicionada ainda.</p>";
+            } else {
+                rendasVariaveis.forEach(renderizarItemRenda);
+            }
+        } catch (error) {
+            console.error("Erro ao carregar rendas variáveis:", error);
+            incomeList.innerHTML = "<p style='color:red;'>Falha ao carregar as rendas.</p>";
+        }
+    };
+
+    // 4. CONFIGURAÇÃO DOS EVENT LISTENERS
+    const setupEventListeners = () => {
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggle.parentElement.classList.toggle('open');
+            });
+        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown.open').forEach(drop => drop.classList.remove('open'));
+            }
+        });
+
+        btnAdd.addEventListener("click", () => overlay.classList.add("active"));
+        cancelarBtn.addEventListener("click", () => overlay.classList.remove("active"));
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) overlay.classList.remove("active");
+        });
+
+        salvarRendaBtn.addEventListener("click", async () => {
+            const valor = document.getElementById("valor").value;
+            const data = document.getElementById("data").value;
+            const descricao = document.getElementById("descricao").value;
+
+            if (!valor || !data) {
+                alert("Por favor, preencha o valor e a data.");
+                return;
+            }
+
+            try {
+                await apiRequest('/api/rendas', {
+                    method: 'POST',
+                    body: JSON.stringify({ valor: parseFloat(valor), data_recebimento: data, descricao: descricao })
+                });
+                overlay.classList.remove("active");
+                rendaForm.reset();
+                await carregarRendasVariaveis();
+            } catch (error) {
+                alert(`Não foi possível salvar a renda: ${error.message}`);
+            }
+        });
+
+        incomeList.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("delete-icon")) {
+                const rendaId = e.target.dataset.id;
+                if (confirm("Tem certeza que quer excluir esta renda?")) {
+                    try {
+                        await apiRequest(`/api/rendas/${rendaId}`, { method: 'DELETE' });
+                        await carregarRendasVariaveis();
+                    } catch (error) {
+                        alert(`Não foi possível excluir a renda: ${error.message}`);
+                    }
+                }
+            }
+        });
+    };
+
+    // 5. INICIALIZAÇÃO DA PÁGINA
+    setupEventListeners();
+    carregarRendaFixa();
+    carregarRendasVariaveis();
+});
+</script>
+</body>
+</html>

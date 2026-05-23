@@ -1,0 +1,382 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #e6f4ea;
+  display: flex;
+  min-height: 100vh;
+  color: #1c1c1c;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background: #1e7f34;
+  padding: 30px 25px;
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  box-shadow: 5px 0 15px rgba(30, 127, 52, 0.3);
+  z-index: 1000;
+}
+
+.sidebar .logo {
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  user-select: none;
+  font-family: "Pixelify Sans", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar .logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+nav {
+  margin-top: 0;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 0 0 transparent;
+  cursor: pointer;
+}
+
+nav a i {
+  min-width: 20px;
+  font-size: 18px;
+}
+
+nav a:hover {
+  background-color: #2f9e48;
+  box-shadow: 0 0 12px #2f9e48;
+  color: #d0f1d4;
+}
+
+nav a.active {
+  background-color: #146627;
+  box-shadow: 0 0 20px #146627;
+  font-weight: 700;
+  color: #c6eec1;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+.socials a img.social-img {
+  max-width: 200px;
+  height: auto;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.socials a img.social-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  background-color: #2f9e48;
+}
+
+.dropdown-menu {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: max-content;
+  background: #4f4f4f;
+  border-radius: 12px;
+  padding: 5px 0;
+  list-style: none;
+  margin: 0 0 6px 0;
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: bottom right;
+  transition: all 0.18s ease;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.dropdown.open .dropdown-menu {
+  transform: scaleY(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.25s;
+  border-radius: 8px;
+}
+
+.dropdown-item:hover {
+  background-color: #2f9e48;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 280px;
+  flex: 1;
+  padding: 35px 40px;
+  background: #f7fcf7;
+  border-radius: 0 30px 30px 0;
+  gap: 25px;
+}
+
+/* Estilo padrão para os "cards" de conteúdo */
+.card-section {
+  background: white;
+  border-radius: 20px;
+  padding: 25px 30px;
+  box-shadow: 0 12px 25px rgba(30, 127, 52, 0.1);
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  font-weight: 700;
+  color: #144d2e;
+  font-size: 28px;
+}
+
+.profile-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 8px 15px;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(30, 127, 52, 0.3);
+  cursor: pointer;
+}
+
+.profile-box img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid #1e7f34;
+}
+
+.profile-box span {
+  font-weight: 600;
+  color: #144d2e;
+  font-size: 16px;
+}
+
+/* ================================================= */
+/* === ESTILO FINAL E CORRIGIDO PARA OS OVERLAYS === */
+/* ================================================= */
+
+/* Fundo escuro e translúcido */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 20, 15, 0.7); /* Fundo mais escuro */
+  backdrop-filter: blur(8px); /* Efeito de desfoque */
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Caixa central do pop-up */
+.overlay-content {
+  background: linear-gradient(135deg, #1f2923, #111827); /* Gradiente escuro */
+  color: #e0e0e0; /* Texto claro */
+  padding: 30px 35px;
+  border: 1px solid rgba(16, 185, 129, 0.3); /* Borda verde sutil */
+  border-radius: 20px;
+  width: 400px;
+  max-width: 95%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: relative;
+}
+
+.overlay-content h2 {
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #63e458; /* Verde neon para o título */
+  font-family: 'Orbitron', sans-serif; /* Fonte mais tecnológica */
+}
+
+/* Foto de perfil e botão de upload */
+.profile-pic {
+  position: relative;
+  margin-bottom: 20px;
+}
+.profile-pic img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #10b918; /* Borda verde mais forte */
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+.upload-label {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 20px;
+  background: #10b918;
+  border-radius: 8px;
+  color: #111827;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+.upload-label:hover {
+  background: #fff;
+  box-shadow: 0 0 15px #fff;
+}
+#uploadFoto {
+  display: none;
+}
+
+/* Caixas de input e labels */
+.input-box {
+  text-align: left;
+  margin-bottom: 18px;
+}
+.input-box label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #a0aec0; /* Cinza claro para a label */
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.input-box input, .input-box select {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  outline: none;
+  font-size: 15px;
+  color: #e0e0e0;
+  background: rgba(17, 24, 39, 0.8);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.input-box input:focus {
+  border-color: #10b918;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+/* Estilo para o parágrafo no modal */
+.overlay-content p {
+  font-size: 16px;
+  color: #a0aec0;
+  line-height: 1.6;
+  margin: 10px 0 20px 0;
+}
+
+/* Container para alinhar os botões */
+.modal-actions {
+  display: flex; /* Coloca os itens lado a lado */
+  gap: 10px;     /* Cria um espaço entre os botões */
+  margin-top: 20px; /* Espaço acima dos botões */
+}
+
+/* Estilo ajustado para os botões */
+.saveBtn, .closeBtn {
+  flex: 1; /* Faz cada botão ocupar metade do espaço disponível */
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+.saveBtn {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  color: #fff;
+}
+.saveBtn:hover {
+  background: linear-gradient(135deg, #15803d, #22c55e);
+}
+
+.closeBtn {
+  background: #dc2626; /* Cor vermelha para fechar */
+  color: white;
+}
+.closeBtn:hover {
+  background: #b91c1c;
+}

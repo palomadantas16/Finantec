@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FINANTEC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+        <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+
+  <style>
+    :root{
+      --red:#00b506; 
+      --deep-red:#036e1f;
+      --light:#ffffff;
+      --dark:#1f1f1f;
+      --muted:#666a73;
+      --bg:#f6f7fb;
+    }
+    *{
+      box-sizing:border-box
+    }
+
+       html,body{
+      margin:0;
+      padding:0;
+      font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--dark);
+      overflow-x:hidden
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none
+    }
+
+    img{
+      max-width:100%;
+      display:block
+    }
+
+    .topbar{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:40;
+      display:flex;
+      justify-content:center
+    }
+
+    .nav{
+      margin-top:16px;
+      background:#fff;
+      border-radius:8px;
+      box-shadow:0 10px 30px rgba(0,0,0,.12);
+      display:flex;
+      gap:28px;
+      align-items:center;
+      padding:12px 22px
+    }
+
+    .nav a{
+      font-weight:600;
+      font-size:14px;
+      color:#333;
+      opacity:.9
+    }
+
+    .nav a.active{
+      color:var(--red)
+    }
+
+    .loginB{
+      position:fixed;
+      top:16px;
+      right:20px;
+      background:var(--red);
+      color:#fff;
+      padding:12px 18px;
+      border-radius:0 0 8px 8px;
+      font-weight:700;
+      box-shadow:0 10px 20px rgba(201,33,38,.35)
+    }
+
+    header{
+      position:relative;
+      height:520px;
+      background:#054e0c;
+      overflow:hidden
+    }
+   
+
+    .coin {
+  position: absolute;
+  top: -40px;
+  width: 32px;         
+  height: 32px;
+  background: url('../img/moeda-brilhando-gigante.gif') no-repeat center/contain;
+  border-radius: 50%;
+  animation: fall linear infinite;
+  z-index: 1;
+}
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(560px) rotate(360deg); opacity: 0.8; }
+    }
+
+    header .red{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, var(--red), var(--deep-red));clip-path:polygon(0 0, 62% 0, 45% 100%, 0% 100%);opacity:.95;z-index:2
+    }
+
+  
+
+    header::before{top:80px}
+    header::after{bottom:80px}
+
+    .brand{
+      position:absolute;
+      left:40px;
+      top:24px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      color:#fff;
+      z-index:5;
+    
+    }
+
+    .brand .logo{
+      display:grid;
+      gap:3px;
+            height: 50px;
+      width: 50px;
+    }
+
+
+    .brand .name{
+      font-weight:800;
+      font-size: 25px;
+      letter-spacing:.03em
+    }
+
+    .hero{
+      position:absolute;
+      inset:0;
+      display:grid;
+      grid-template-columns:1.1fr 1fr;
+      align-items:end;
+      padding:140px 60px 40px 60px;
+      z-index:3
+    }
+    .hero h1{
+      font-family:'Playfair Display',serif;
+      color:#fff;
+      font-size:72px;
+      line-height:0.98;
+      margin:0 0 8px
+    }
+
+    .hero h1 .light{
+      font-weight:300;
+      font-family:Montserrat;
+    }
+
+    .hero h1 .em{font-weight:800}
+
+    .hero p{
+      max-width:520px;
+      color:#fff;
+      opacity:.85;
+      margin:0 0 22px
+    }
+    .btn{
+      display:inline-block;
+      background:#fff;
+      color:var(--red);
+      padding:14px 18px;
+      border-radius:6px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      font-size:12px}
+
+    main{
+      position:relative;
+      margin-top:-20px
+    }
+
+    section{padding:80px 24px}
+    .container{
+      max-width:1120px;
+      margin:0 auto
+    }
+
+    .about{
+      background:#fff;
+      position:relative
+    }
+    .about .title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:18px;
+      color:#999;
+      font-weight:600
+    }
+    .about h2{
+      font-size:34px;
+      margin:0 0 5px;
+      padding-bottom: 2px;
+
+    }
+
+    .about h2 .accent{
+      font-weight:800;
+  
+    }
+
+    .about .grid{
+      display:grid;
+      grid-template-columns:1fr 520px;
+      gap:40px;
+      align-items:center
+    }
+
+    .about .decor{
+      position:absolute;
+      right:12%;
+      top:40px;
+      width:160px;
+      height:160px;
+      background:var(--red);
+      opacity:.95}
+
+    .about .photo-wrap{
+      position:relative;
+      z-index:2
+    }
+
+    .p1{
+      padding: 5px;
+      margin-top: 5px;
+      font-size: 17px;
+      width: 550px;
+      line-height: 30px;
+    }
+
+    .about .photo{
+      box-shadow:0 10px 40px rgba(0,0,0,.25);
+      height: 450px;
+      width: 500px;
+    }
+
+    .about .more{
+      display:inline-block;
+      background:var(--red);
+      color:#fff;
+      padding:12px 16px;
+      border-radius:4px;
+      font-weight:700;
+      margin-top:14px}
+
+    .quote-strip{
+      background:#f2f3f6;
+      position:relative;
+      overflow:hidden
+    }
+
+    .quote-strip .bg-tex{
+      position:absolute;
+      inset:0;
+      background:url('../img/fundomoedas.jpg') center/cover no-repeat;
+      opacity:.12;
+    }
+    .quote{
+      position:relative;
+      max-width:820px;
+      margin:20px auto;
+      text-align:center;
+      padding:60px 20px;
+    }
+    
+    .quote q{
+      font-size:22px;
+      font-weight:700;
+      line-height:1.4
+    }
+
+    .products{
+      background:linear-gradient(180deg,var(--red),var(--deep-red));
+      color:#fff;
+      position:relative;
+      height: 650px;
+    }
+
+    .products .heading{
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;      
+      font-size:32px;
+      opacity:.92;
+      margin-bottom:32px;
+      margin-top:2px;
+      text-align:center
+    }
+    .carousel {
+      position: relative;
+      width: 80%;
+      max-width: 1000px;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px; 
+      margin-left: 100px;
+      margin-bottom: 100px;
+      margin-top: 10px;
+
+    }
+
+.card {
+  position: absolute;             
+  width: 280px;
+  height: 400px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;          
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 16px;
+  font-weight: normal;
+  transition: transform 0.6s ease, 
+              opacity 0.6s ease, 
+              box-shadow 0.6s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.card-content {
+  padding: 20px;
+  text-align: center;
+  flex: 1;
+}
+
+.card-content h3 {
+  margin: 10px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.card-content p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.card .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  font-size: 14px;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.card .btn:hover {
+  background: #218838;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 10;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffffff, #e6e6e6);
+  color: #333;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: linear-gradient(135deg, #12e92f, #71ed71);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+
+    .car-ctrl{
+      display:flex;
+      justify-content:space-between;
+      max-width:980px;
+      margin:14px auto 0
+    }
+
+    .car-ctrl button{
+      background:#fff;
+      border:0;
+      padding:12px 14px;
+      border-radius:8px;
+      box-shadow:0 10px 20px rgba(0,0,0,.2);
+      font-weight:800;cursor:pointer
+    }
+
+    footer{
+      padding:80px 24px 40px;
+      background:#fff;
+      position:relative
+    }
+
+    .foot-brand{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px
+    }
+
+    .foot-nav{
+      display:flex;
+      gap:26px;
+      justify-content:center;
+      margin-top:26px;
+      font-weight:600;
+      color:#666
+    }
+
+    .copyright{
+      margin-top:30px;
+      text-align:center;
+      color:#8a8a8a;
+      font-size:12px
+    }
+ 
+    .wrap{
+      max-width:var(--container-width);
+     margin: 0px auto;   
+     padding: 0px 32px;
+     }
+
+    .hero1{
+      display:flex;
+      align-items:center;
+      gap:48px;
+
+    }
+
+    .hero1.reverse {
+  flex-direction: row-reverse;
+  min-width: 550px;
+  margin-left: 50px;
+  line-height: 30px;
+}
+
+    .hero1-left{
+      flex:0 0 48%;
+      position:relative;
+      min-height:260px;
+    }
+
+    .photo1 img{
+      display:block;
+      width:600px;
+      height:450px;
+      object-fit:cover;
+      border-radius:8px;
+      margin-left: 30px;
+    }
+
+    .photo1::after{
+      content:"";
+      position:absolute;
+      left:-36px;
+      top:-36px;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:linear-gradient(135deg, rgba(255,255,255,0.6) 0 50%, transparent 50%);
+      background-size:6px 6px;
+      transform:rotate(10deg);
+      opacity:0.9;
+      pointer-events:none;
+    }
+
+    .hero1-right{
+      flex:1;
+      padding:8px 0;
+    }
+
+    .hero1-title{
+      font-family: 'Playfair Display', serif;
+      font-size:34px;
+      line-height:1.05;
+      margin:0 0 12px 0;
+      color:#0f172a;
+      letter-spacing:-0.2px;
+    }
+
+ p.lead{
+      margin:0 0 20px 0;
+      color: black;
+      max-width:600px;
+      font-size: 18px;
+      line-height: 30px;
+      margin-top: 30px;
+
+    }
+
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      background-color: #16c61b;
+      color: white;
+      padding:12px 18px;
+      border-radius:999px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(249,115,22,0.18);
+      transition:transform .15s ease, box-shadow .15s ease;
+      text-decoration:none;
+    }
+    .cta:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(249,115,22,0.22)}
+
+    .cta .arrow{
+      display:inline-block;
+      width:22px;height:22px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.12);
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;
+    }
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr;padding:150px 24px 36px}
+      header .red{clip-path:polygon(0 0, 100% 0, 72% 100%, 0% 100%)}
+      .about .grid{grid-template-columns:1fr}
+      .about .decor{right:24px;top:22px;width:120px;height:120px}
+      .carousel{gap:18px}
+      .card{width:84vw}
+    }
+     
+  </style>
+</head>
+<body data-pagina="informativaPP">
+  <div class="topbar">
+    <nav class="nav">
+       <a href="../html/home.html" class="active">Home</a>
+      <a href="../html/informativaRenda.html">Renda</a>
+      <a href="../html/informativaDespesa.html">Despesas </a>
+      <a href="../html/informativaCreditos.html">Crédito</a>
+      <a href="../html/informativaCC.html">Consumo</a>
+      <a href="../html/informativaEd.html">Ed.Financeira</a>
+    </nav>
+    <div class="loginB"><a href="../html/loginCadastroNOVO.html">Login</a></div>
+  </div>
+
+  <header id="home">
+    <div class="red"></div>
+
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+      <img src="../img/coin-flip-59.gif" alt="">      
+      </div>
+      <div class="name">FINANTEC</div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <h1><span class="light"> </span><br> Planejamento Pessoal:</h1>
+        <p>Aqui é o começo da sua jornada...</p>
+        <a class="btn" href="../jogo/indexJJ.html">Aprenda jogando</a>
+      </div>
+      <div></div>
+    </div>
+  </header>
+<main>
+    <section class="about" id="company">
+      <div class="container">
+        <div class="title">Planejamento Pessoal</div>
+       
+        <div class="grid" id="investir">
+          <div class="p1">
+             <h2 id="pp-intro-titulo">Como definir <span class="accent">metas financeiras :</span></h2>
+             <div id="pp-intro-texto">
+            <p class="lead"><strong>Ter metas claras é </strong>o primeiro passo para organizar a vida financeira. Uma meta é mais do que apenas um desejo, ela precisa ser específica, ter prazo e valor definido, como “juntar R$ 500 em 3 meses para comprar um celular”. Essa clareza ajuda a manter a motivação e acompanhar o progresso. Para os jovens, definir metas também é uma forma de aprender disciplina e priorização. O importante é começar pequeno e ir aumentando aos poucos, evitando frustrações. Quanto mais bem planejada for a meta, maior a chance de alcançá-la.</p></div>
+<button class="cta" onclick="document.getElementById('perfil').scrollIntoView({behavior: 'smooth'});"> Orçamento pessoal →</button>         
+ </div>
+          <div class="photo-wrap">
+            <img class="photo" src="../img/planejamentopessoal(agenda).jpg" alt="Modern house with metal roof" />
+          </div>
+        </div>
+        <div class="decor"></div>
+      </div>
+    </section>
+
+    <section class="quote-strip">
+      <div class="bg-tex"></div>
+      <div class="quote">
+        <q id="quoteText">Investir não é apenas aplicar dinheiro, é acreditar que o esforço de hoje pode transformar seus sonhos em conquistas reais amanhã.</q>
+      </div>
+    </section>
+
+    <section class="products" id="products">
+      <div class="container">
+        <h3 class="heading">Tipos de Investimentos</h3>
+
+      <div class="carousel">
+
+    <div class="card">
+        <img src="../img/bau-aberto.png" alt="Imagem ilustrativa"  style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>Tesouro Direto</h3>
+      <p>Títulos públicos do governo com diferentes prazos e rentabilidades.</p>
+      <a href="../html/informativaTesouro.html" class="btn">Saber Mais</a>
+    </div>
+    </div>
+
+    <div class="card">
+        <img src="../img/poupança.png" alt="Imagem ilustrativa" style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>Poupança</h3>
+      <p>Simples e segura, mas com rendimento baixo.</p>
+      <a href="../html/informativaPoupança.html" class="btn">Saber Mais</a>
+    </div>
+    </div>
+
+    <div class="card">
+      <img src="../img/lci-removebg-preview.png" alt="Imagem ilustrativa" style="width: 150px; height: 150px; margin-bottom: 40px;">
+    <div class="card-content">
+      <h3>LCI/LCA</h3>
+      <p>Investimentos isentos de imposto, mas com prazo fixo.</p>
+      <a href="../html/informativaLCI_LCA.html" class="btn">Saber Mais</a>
+    </div>
+  </div>
+
+    <div class="card">
+      <img src="../img/casaaaaa.png" alt="Imagem ilustrativa"   style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>Fundos Imobiliarios</h3>
+      <p>Cotas de imóveis que geram renda através de aluguéis e valorização.</p>
+      <a href="../html/informativaFI.html" class="btn">Saber Mais</a>
+    </div></div>
+
+    <div class="card">
+      <img src="../img/note.png" alt="Imagem ilustrativa"  style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>CDB</h3>
+      <p>Empréstimo ao banco que rende juros fixos ou atrelados ao CDI.</p>
+      <a href="../html/informativaCDB.html" class="btn">Saber Mais</a>
+    </div></div>
+    <div class="card">
+      <img src="../img/ca20.png" alt="Imagem ilustrativa"  style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>CDI</h3>
+      <p>Taxa de referência dos juros entre bancos, usada como benchmark de investimentos.</p>
+      <a href="../html/informativaCDI.html" class="btn">Saber Mais</a>
+    </div></div>
+    <div class="card">
+      <img src="../img/ca30.png" alt="Imagem ilustrativa"  style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>Câmbio e Criptomoedas</h3>
+      <p> Compra e venda de moedas estrangeiras.</p>
+      <a href="../html/informativaCC.html" class="btn">Saber Mais</a>
+    </div></div>
+    <div class="card">
+      <img src="../img/acoess.png" alt="Imagem ilustrativa"  style="width: 200px; height: 200px;">
+    <div class="card-content">
+      <h3>Ações</h3>
+      <p>Seja sócio de empresas e participe dos lucros (e riscos).</p>
+      <a href="../html/informativaAcoes.html" class="btn">Saber Mais</a>
+    </div></div>
+
+
+    <button class="carousel-btn prev">&#10094;</button>
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+
+      </div>
+    </section>
+<br>
+     <div class="wrap" id="perfil">
+    <section class="hero1" aria-labelledby="hero-title">
+      <div class="hero1-left">
+        <div class="photo1">
+          <img src="../img/planejamentopessoal(calendário).jpg" alt=""/>
+        </div>
+      </div>
+
+      <div class="hero1-right">
+        <h1 id="pp-orcamento-titulo">Orçamento pessoal</h1>
+        <div id="pp-orcamento-texto">
+        <p class="lead">O orçamento é como um mapa que mostra para onde vai o nosso dinheiro. Ele consiste em anotar todas as receitas (dinheiro que entra) e todas as despesas (dinheiro que sai). Isso ajuda a entender se estamos gastando mais do que recebemos e em quais áreas é possível economizar. Um bom orçamento pode ser feito em caderno, planilha ou até em aplicativos de celular, o importante é manter a disciplina. Para jovens, é essencial porque ajuda a organizar a mesada, a renda de trabalhos temporários ou estágios, e até mesmo presentes em dinheiro. Saber para onde o dinheiro vai evita surpresas no fim do mês.</p></div>
+<br>
+        <button class="cta" id="scheduleBtn" aria-label="Schedule Free Consultation"onclick="document.getElementById('risco').scrollIntoView({behavior: 'smooth'});">
+Reserva de emergência<span class="arrow">→</span>
+        </button>
+        
+        </div>
+
+      </div>
+    </section>
+  </div>
+       <div class="wrap" id="risco">
+    <section class="hero1 reverse" aria-labelledby="hero-title">
+      <div class="hero1-left">
+        <div class="photo1">
+          <img src="../img/planejamentopessoal(notebook).jpg" alt="" />
+        </div>
+      </div>
+
+      <div class="hero1-right">
+        <h1 id="pp-reserva-titulo">Reserva de emergência</h1>
+        <div id="pp-reserva-texto">
+        <p class="lead">A reserva de emergência é um dinheiro guardado para imprevistos, como problemas de saúde, perda de emprego ou consertos inesperados. O ideal é juntar pelo menos o equivalente a três a seis meses de despesas básicas. Mesmo que pareça difícil, começar guardando pouco já faz diferença. Essa reserva deve ficar em investimentos seguros e fáceis de resgatar, como poupança ou Tesouro Selic. Para os jovens, criar essa reserva traz segurança e tranquilidade, pois mostra que é possível enfrentar imprevistos sem precisar pedir ajuda ou se endividar. É como um colete salva-vidas financeiro.</p></div>
+<br>
+        <button class="cta" id="scheduleBtn" aria-label="Schedule Free Consultation" onclick="document.getElementById('investir').scrollIntoView({behavior: 'smooth'});">Como definir metas financeiras?<span class="arrow">→</span>
+        </button>
+        
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  </main>
+
+  <footer>
+    <div class="foot-brand">
+      <div class="logo" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div style="font-weight:800">FINANTEC</div>
+    </div>
+    <nav class="foot-nav">
+      <a href="../html/homePage.html">Home</a>
+      <a href="../html/loginCadastroNOVO.html">Login</a>
+      <a href="../jogo/indexJJ.html">GameMoney</a>
+    </nav>
+    <div class="copyright">©2025 FINANTEC • Etec de Campo Limpo Paulista</div>
+  </footer>
+
+<script src="../js/carregar-conteudo.js"></script>
+
+  <script>
+    // Animação de moedas caindo
+    function createCoin() {
+      const coin = document.createElement("div");
+      coin.classList.add("coin");
+      coin.style.left = Math.random() * window.innerWidth + "px";
+      coin.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      const header = document.querySelector("header");
+      if (header) {
+        header.appendChild(coin);
+        setTimeout(() => coin.remove(), 5000);
+      }
+    }
+    setInterval(createCoin, 200);
+
+    // Carrossel de Citações (CORRIGIDO SEM O ERRO)
+    const quotes = [
+      { t: 'Investir não é apenas aplicar dinheiro, é acreditar que o esforço de hoje pode transformar seus sonhos em conquistas reais amanhã.' },
+      { t: 'Cada pequeno investimento feito com consciência é uma peça no grande quebra-cabeça do seu futuro financeiro.' },
+      { t: 'Não espere que oportunidades financeiras apareçam por acaso; invista no seu conhecimento e crie as oportunidades que deseja.' }
+    ];
+    let qi = 0;
+    const quoteTextEl = document.getElementById('quoteText');
+    if (quoteTextEl) {
+      setInterval(() => {
+        qi = (qi + 1) % quotes.length;
+        quoteTextEl.textContent = quotes[qi].t;
+      }, 5000);
+    }
+
+    // Carrossel de Cards
+    const cards = document.querySelectorAll(".card");
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
+    if (cards.length > 0 && prevBtn && nextBtn) {
+      let currentIndex = Math.floor(cards.length / 2);
+      function updateCarousel() {
+        cards.forEach((card, i) => {
+          let offset = i - currentIndex;
+          let scale = 1 - Math.abs(offset) * 0.15;
+          let translateX = offset * 240;
+          let opacity = Math.abs(offset) <= 1 ? 0.7 : 0;
+          if (offset === 0) opacity = 1;
+          let zIndex = cards.length - Math.abs(offset);
+          
+          card.style.transform = `translateX(${translateX}px) scale(${scale})`;
+          card.style.opacity = opacity;
+          card.style.zIndex = zIndex;
+        });
+      }
+      nextBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % cards.length;
+        updateCarousel();
+      });
+      prevBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        updateCarousel();
+      });
+      setInterval(() => { nextBtn.click(); }, 4000);
+      updateCarousel();
+    }
+  </script>
+
+</body>
+</html>

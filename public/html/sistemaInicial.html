@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FINANTEC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link class="titulo-logo" rel="icon" href="../img/moeda-brilhando-gigante.gif">
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #e6f4ea;
+      display: flex;
+      min-height: 100vh;
+      color: #1c1c1c;
+      margin: 0;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background: #006c19;
+      padding: 30px 25px;
+      border-radius: 0 20px 20px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 5px 0 15px rgba(30, 127, 52, 0.3);
+      z-index: 1000;
+    }
+
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      user-select: none;
+      font-family: "Press Start 2P", system-ui;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar .logo img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    nav {
+      margin-top: 0;
+            margin-top: 80px;
+
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: inset 0 0 0 transparent;
+      cursor: pointer;
+    }
+
+    nav a i {
+      min-width: 20px;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      background-color: #2f9e48;
+      box-shadow: 0 0 12px #2f9e48;
+      color: #d0f1d4;
+    }
+
+    nav a.active {
+      background-color: #146627;
+      box-shadow: 0 0 20px #146627;
+      font-weight: 700;
+      color: #c6eec1;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+
+    .socials a img.social-img {
+      max-width: 200px;
+      height: auto;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    .socials a img.social-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+    }
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  background-color: #2f9e48;
+  box-shadow: 0 0 12px #2f9e48;
+  color: #d0f1d4;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 400px;  /* Largura fixa para 2 colunas */
+  background: #4f4f4f;
+  border-radius: 12px;
+  padding: 10px;
+  list-style: none;
+  margin: 0 0 0 10px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: all 0.18s ease;
+  z-index: 2000;
+  pointer-events: none;
+  
+  /* Grid de 2 colunas */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.dropdown.open .dropdown-menu {
+  transform: scaleX(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.25s;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #2f9e48;
+}
+
+    .main {
+      margin-left: 280px;
+      flex: 1;
+      padding: 35px 40px;
+      background: #f7fcf7;
+      border-radius: 0 30px 30px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      box-shadow: inset 0 0 60px #d9efd0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header h1 {
+      font-weight: 700;
+      color: #144d2e;
+      font-size: 28px;
+    }
+
+    .header input {
+      padding: 12px 15px;
+      width: 280px;
+      border-radius: 15px;
+      border: 1.5px solid #c7d9c6;
+      font-size: 15px;
+      transition: border-color 0.3s ease;
+    }
+
+    .header input:focus {
+      border-color: #1e7f34;
+      outline: none;
+      box-shadow: 0 0 8px #1e7f34;
+    }
+
+    
+
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      padding: 8px 15px;
+      border-radius: 30px;
+      box-shadow: 0 2px 8px rgba(30, 127, 52, 0.3);
+      cursor: pointer;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .profile-box:hover {
+      box-shadow: 0 4px 15px rgba(30, 127, 52, 0.5);
+    }
+
+    .profile-box img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid #1e7f34;
+    }
+
+    .profile-box span {
+      font-weight: 600;
+      color: #144d2e;
+      font-size: 16px;
+    }
+
+    .card-section {
+      background: white;
+      border-radius: 20px;
+      padding: 25px 30px;
+      box-shadow: 0 12px 25px rgba(30, 127, 52, 0.15);
+    }
+
+    .card-section h3 {
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #1e7f34;
+      font-size: 22px;
+      width: 100%;
+    }
+
+    .cards {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .balance-card {
+      flex: 2;     
+      width: 710px;
+      background: linear-gradient(135deg, #146627, #3daa52);
+      color: white;
+      border-radius: 20px;
+      padding: 25px 30px;
+      box-shadow: 0 10px 20px rgba(20, 102, 39, 0.6);
+      user-select: none;
+    }
+
+    .balance-card p strong {
+      font-weight: 700;
+    }
+
+    .balance-card h2 {
+      font-size: 32px;
+      margin: 10px 0;
+    }
+
+    .progress-container p {
+      font-weight: 600;
+      margin-bottom: 8px;
+      
+    }
+
+    .progress-bar {
+      background-color: rgba(255 255 255 / 0.25);
+      border-radius: 12px;
+      height: 14px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: inset 0 0 5px rgba(255 255 255 / 0.4);
+    }
+
+    .progress-bar .fill {
+      background-color: #ffffff;
+      height: 100%;
+      width: 60%;
+      border-radius: 12px;
+      transition: width 0.6s ease;
+      box-shadow: 0 0 10px #03390f;
+    }
+
+    .progress-container p:last-child {
+      margin-top: 6px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .actions {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .actions button {
+      background: #064e1a;
+      border: none;
+      padding: 14px 20px;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(6, 78, 26, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    .actions button:hover {
+      background-color: #03390f;
+      box-shadow: 0 6px 18px rgba(3, 57, 15, 0.9);
+    }
+
+    .criar{
+         flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .criar button {
+      background: #064e1a;
+      border: none;
+      padding: 14px 20px;
+      margin-top: 18px;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(6, 78, 26, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+       .criar button:hover {
+      background-color: #007419;
+      box-shadow: 0 6px 18px rgba(3, 57, 15, 0.9);
+    }
+    .excluir{
+         flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .excluir button {
+      background: #064e1a;
+      border: none;
+      padding: 14px 20px;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(6, 78, 26, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+       .excluir button:hover {
+      background-color: #a80600;
+      box-shadow: 0 6px 18px rgba(3, 57, 15, 0.9);
+    }
+
+    .portfolio {
+      background: white;
+      border-radius: 20px;
+      padding: 25px 30px;
+      box-shadow: 0 12px 25px rgba(30, 127, 52, 0.15);
+      user-select: none;
+    }
+
+    .portfolio h3 {
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #1e7f34;
+      font-size: 22px;
+    }
+
+    .coins {
+      display: flex;
+      gap: 25px;
+    }
+
+    .coin {
+      background: #e6f4ea;
+      padding: 20px 25px;
+      border-radius: 15px;
+      flex: 1;
+      text-align: center;
+      font-weight: 600;
+      font-size: 17px;
+      box-shadow: 0 4px 8px rgba(30, 127, 52, 0.12);
+      user-select: none;
+    }
+
+    .coin span {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .coin span.green {
+      color: #059669;
+    }
+
+    .coin span.red {
+      color: #dc2626;
+    }
+
+    .chart-box {
+      background: white;
+      border-radius: 20px;
+      padding: 25px 30px;
+      box-shadow: 0 12px 25px rgba(30, 127, 52, 0.15);
+      user-select: none;
+    }
+
+    .chart-box h3 {
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #1e7f34;
+      font-size: 22px;
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 300px;
+      user-select: none;
+    }
+ 
+.profile-pic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.profile-pic img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  border: 3px solid #fff;
+}
+.profile-pic input {
+  color: #fff;
+  font-size: 14px;
+}
+
+.input-box {
+  margin: 10px 0;
+  text-align: left;
+    text-align: center;
+
+}
+.input-box label {
+  display: block;
+  text-align: left;
+  padding-left: 10px; 
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #000; 
+  font-weight: bold;
+}
+.input-box input {
+  width: 100%; 
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: white; 
+  color: #000; 
+}
+
+.saveBtn {
+  margin-top: 15px;
+  width: 100%;
+  text-align: center;  
+  padding: 12px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #22c55e, #15803d); 
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.saveBtn:hover {
+  background: linear-gradient(135deg, #15803d, #22c55e); 
+}
+
+.saldo-box {
+  background-color: rgb(213, 251, 220);
+  color: rgb(0, 78, 0);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(20, 102, 39, 0.6);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+  cursor: default;
+}
+
+.saldo-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(20, 102, 39, 0.8);
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-content {
+  background: linear-gradient(135deg, #caefd5, #c5e0c6);
+  color: rgb(0, 141, 9);
+  padding: 30px;
+  border: 5px solid #00be29;
+  border-radius: 20px; 
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+  animation: fadeIn 0.3s ease;
+  text-align: center;
+}
+
+.overlay-content h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.profile-pic {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.profile-pic img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00be29;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.upload-label {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 15px;
+  background: #276c3b;
+  border-radius: 12px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.upload-label:hover {
+  background: #2db965;
+}
+
+#uploadFoto {
+  display: none;
+}
+
+.closeBtn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: #dc2626;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.closeBtn:hover {
+  background: #b91c1c;
+}
+a, a:visited {
+  color: inherit;         
+  text-decoration: none;   
+}
+
+a:hover, a:active {
+  color: inherit;         
+  text-decoration: none;  
+}
+.calculadora-container {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.calculadora-btn,
+.historico-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.calculadora-btn:hover {
+  background-color: #2f9e48;
+  box-shadow: 0 0 12px #2f9e48;
+}
+
+.historico-btn {
+  display: none;
+  background: #6dad6d;
+  margin-left: 20px; 
+}
+
+.calculadora-container:hover .historico-btn {
+  display: flex;
+}
+
+
+.input-box select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #000000;
+  background: white;
+
+}
+.cards {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  position: relative;  
+  min-height: 250px; 
+}
+
+.arrow.left { 
+  left: -30px;
+}
+
+.arrow.right { 
+  right: 340px; 
+}
+
+.arrow {
+  background-color: rgb(0, 72, 6);  border: none;
+  color: white;
+  font-size: 22px;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(6, 78, 26, 0.6);
+  transition: background 0.3s ease, transform 0.2s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.arrow:hover {
+  background: #00b828;
+  transform: translateY(-50%) scale(1.1);
+}
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo"><a href="../html/home.html"><img src="../img/coin-flip-59.gif" alt="Logo Finantec" /></a>
+      Finantec
+    </div>
+
+    <nav>
+      <a href="../html/pagRenda.html"><i class="fas fa-th-large"></i>Rendas</a>
+      <a href="../html/pagDespesas.html"><i class="fas fa-shopping-cart"></i>Despesas</a>
+      <a href="../html/calendario.html"><i class="fas fa-calendar"></i>Calendário</a>
+   
+      <div class="calculadora-container">
+        <a href="tiposCalcula.html" class="calculadora-btn">
+          <i class="fas fa-calculator"></i> Calculadoras
+        </a>
+        <a href="../html/historico.html" class="historico-btn">
+          <i class="fas fa-clock"></i> Histórico
+        </a>
+      </div>
+
+      <div class="dropdown">
+        <div class="dropdown-toggle">
+          <i class="fas fa-book"></i>Estude sobre<i class="fas fa-caret-down"></i>
+        </div>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="../html/informativaAcoes.html">Ações</a></li>
+            <li><a class="dropdown-item" href="../html/informativaCDB.html">CDB</a></li>
+            <li><a class="dropdown-item" href="../html/informativaCDI.html">CDI</a></li>
+            <li><a class="dropdown-item" href="../html/informativaFI.html">F.I</a></li>
+            <li><a class="dropdown-item" href="../html/informativaLCI_LCA.html">LCA e LCI</a></li>
+            <li><a class="dropdown-item" href="../html/informativaPoupança.html">Poupança</a></li>
+            <li><a class="dropdown-item" href="../html/informativaTesouro.html">Tesouro Direto</a></li>
+            <li><a class="dropdown-item" href="../html/informativaCC.html">Criptomoedas</a></li>
+        </ul>
+      </div>
+    </nav>  
+
+    <div class="socials">
+      <a href="../jogo/indexJJ.html" target="_blank" title="Jogar">
+        <img src="../img/botaJogar.png" alt="Jogar" class="social-img" />
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <h1>Olá, Usuário!</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">  
+        <div class="saldo-box">
+          Meu Saldo <br> R$0,00
+        </div>
+        <div class="profile-box" id="perfilBtn">
+          <img id="fotoPerfilBox" src="../img/avatar.jpg" alt="Foto de perfil">
+          <span>Usuário</span>
+          <button id="logoutBtn" style="
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlayPerfil" class="overlay">
+      <div class="overlay-content">
+        <h2>Editar Perfil</h2>
+        <form id="perfilForm">
+          <div class="profile-pic">
+            <img id="fotoPerfil" src="../img/avatar.jpg" alt="Foto de perfil">
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+              <label for="uploadFoto" class="upload-label">Trocar Foto</label>
+              <button type="button" id="removerFotoBtn" class="upload-label" style="background-color: #dc2626;">Remover Foto</button>
+            </div>
+            <input type="file" id="uploadFoto" name="avatar" accept="image/*">
+          </div>
+          <div class="input-box">
+            <label for="nomePerfil">Editar Nome</label>
+            <input type="text" id="nomePerfil" name="nome" value="Usuário">
+          </div>
+          <div class="input-box">
+            <label for="rendaPerfil">Editar Renda Mensal</label>
+            <input type="number" id="rendaPerfil" name="renda" placeholder="Digite sua renda">
+          </div>
+          <div class="input-box">
+            <label for="despesaPerfil">Editar Despesa Mensal</label>
+            <input type="number" id="despesaPerfil" name="despesa" placeholder="Digite sua despesa">
+          </div>
+          <button type="button" class="saveBtn" id="savePerfil">Salvar alterações</button>
+          <button type="button" class="closeBtn" id="fecharPerfil">Fechar</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="card-section">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3>Meus Objetivos</h3>
+          <div id="carouselDots" class="carousel-dots" style="position: static;"></div>
+      </div>
+      <div class="cards" id="cardsContainer">
+          </div>
+      <div class="criar">
+        <button id="btnCriarObjetivo">+ Criar um novo objetivo</button>
+      </div> 
+    </div>
+
+    <div id="overlayAdicionar" class="overlay">
+      <div class="overlay-content">
+        <h2 id="acaoMetaTitulo">Adicionar Valor</h2>
+        <div class="input-box">
+          <label for="acaoMetaValor">Valor:</label>
+          <input type="number" id="acaoMetaValor" placeholder="R$ 0,00">
+        </div>
+        <button class="saveBtn" id="salvarAcaoMetaBtn">Salvar</button>
+        <button class="closeBtn" id="fecharAcaoMetaBtn">Fechar</button>
+      </div>
+    </div>
+    
+    <div id="overlayRetirar" class="overlay">
+        <div class="overlay-content">
+          <h2>Retirar Dinheiro</h2>
+          <div class="input-box">
+            <label for="retirarMetaValor">Valor a retirar:</label>
+            <input type="number" id="retirarMetaValor" placeholder="R$ 0,00">
+          </div>
+          <button class="saveBtn" id="salvarRetirarMetaBtn">Confirmar Retirada</button>
+          <button class="closeBtn" id="fecharRetirarMetaBtn">Fechar</button>
+        </div>
+    </div>
+
+    <div id="overlayExcluirMeta" class="overlay">
+        <div class="overlay-content">
+          <h2>Excluir Meta</h2>
+          <div class="input-box">
+              <p style="color: #000; font-weight: bold;">Tem certeza que deseja excluir esta meta permanentemente?</p>
+          </div>
+          <button class="saveBtn" id="confirmarExcluirMetaBtn" style="background: #b91c1c;">Sim, excluir</button>
+          <button class="closeBtn" id="cancelarExcluirMetaBtn">Cancelar</button>
+        </div>
+    </div>
+
+    <div class="portfolio">
+      <h3>Minha Gestão Financeira</h3>
+      <div class="coins">
+        <div class="coin" id="rendaCard">
+          <strong>Renda (Mês)</strong><br />
+          R$0,00
+        </div>
+        <div class="coin" id="despesaCard">
+          <strong>Despesa (Mês)</strong><br />
+          R$0,00
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h3>Meu desempenho geral:</h3>
+      <canvas id="portfolioChart"></canvas>
+    </div>
+
+  
+  </div>
+
+  <div id="overlayCriarObjetivo" class="overlay">
+    <div class="overlay-content">
+      <h2>Criar Novo Objetivo</h2>
+      <form id="objetivoForm">
+        <div class="input-box">
+          <label for="nomeObjetivo">Nome do Objetivo:</label>
+          <input type="text" id="nomeObjetivo" placeholder="Ex: Comprar um carro">
+        </div>
+        <div class="input-box">
+          <label for="valorObjetivo">Valor total do objetivo:</label>
+          <input type="number" id="valorObjetivo" min="1" placeholder="R$ 0,00">
+        </div>
+        <div class="input-box">
+          <label for="tempoObjetivo">Tempo de economia (em meses):</label>
+          <input type="number" id="tempoObjetivo" min="1" placeholder="Ex: 12">
+        </div>
+        <div class="input-box">
+          <label>Frequência que irá juntar:</label>
+          <select id="frequenciaObjetivo">
+            <option value="semanal">Semanalmente</option>
+            <option value="mensal">Mensalmente</option>
+            <option value="diario">Diariamente</option>
+          </select>
+        </div>
+        <div class="input-box">
+            <label for="nomeCorObjetivo">Cor do Card:</label>
+            <input type="color" id="nomeCorObjetivo" value="#146627">
+        </div>
+        <button type="button" class="saveBtn" id="salvarObjetivoBtn">Salvar Objetivo</button>
+        <button type="button" class="closeBtn" id="fecharObjetivoBtn">Fechar</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. VALIDAÇÃO DO TOKEN
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'loginCadastroNOVO.html';
+        return;
+    }
+
+    // ======================================================================
+    // 2. CONFIGURAÇÕES GLOBAIS E FUNÇÕES DE API
+    // ======================================================================
+
+    const API_BASE_URL = 'http://localhost:5000';
+
+    const apiRequest = async (endpoint, options = {}) => {
+        const fetchOptions = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...fetchOptions, ...options });
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'loginCadastroNOVO.html';
+            throw new Error('Não autorizado');
+        }
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido no servidor' }));
+            throw new Error(errorData.message);
+        }
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return response.json();
+        }
+        return {}; 
+    };
+
+    const apiUploadRequest = async (endpoint, options = {}) => {
+        const fetchUploadOptions = {
+            headers: { 'Authorization': `Bearer ${token}` }
+        };
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...fetchUploadOptions, ...options });
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'loginCadastroNOVO.html';
+            throw new Error('Não autorizado');
+        }
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido no servidor' }));
+            throw new Error(errorData.message);
+        }
+        return response.json();
+    };
+
+
+    // ======================================================================
+    // 3. FUNÇÕES PRINCIPAIS DA PÁGINA
+    // ======================================================================
+
+    
+    async function carregarDashboard() {
+        try {
+            const [user, financeiro] = await Promise.all([
+                apiRequest('/api/auth/me'),
+                apiRequest('/api/usuarios/financeiro-dashboard')
+            ]);
+            
+            document.querySelector('.header h1').textContent = `Olá, ${user.nome}!`;
+            document.querySelector('.profile-box span').textContent = user.nome;
+
+            const avatarUrl = user.avatar_url ? `${API_BASE_URL}/${user.avatar_url}` : '../img/avatar.jpg';
+            document.getElementById('fotoPerfilBox').src = avatarUrl;
+            document.getElementById('fotoPerfil').src = avatarUrl;
+            
+            const saldoBox = document.querySelector('.saldo-box');
+            
+            saldoBox.innerHTML = `Meu Saldo <br> R$${financeiro.saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+            if (financeiro.saldo < 0) {
+                saldoBox.style.backgroundColor = '#ffdddd';
+                saldoBox.style.color = '#d90429';
+            } else {
+                saldoBox.style.backgroundColor = 'rgb(213, 251, 220)';
+                saldoBox.style.color = 'rgb(0, 78, 0)';
+            }
+            
+            document.getElementById('rendaCard').innerHTML = `<strong>Renda (Mês)</strong><br />R$${financeiro.renda.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            document.getElementById('despesaCard').innerHTML = `<strong>Despesa (Mês)</strong><br />R$${financeiro.despesa.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        } catch (error) {
+            console.error('Erro ao carregar dashboard:', error);
+            alert('Falha ao carregar os dados do dashboard. Tente recarregar a página.');
+        }
+    }
+    
+    // --- LÓGICA DO CARROSSEL DE METAS ---
+    const cardsContainer = document.getElementById('cardsContainer');
+    const dotsContainer = document.getElementById('carouselDots');
+    let metasCache = [];
+    let currentIndex = 0;
+    
+    async function carregarMetasCarrossel() {
+        try {
+            metasCache = await apiRequest('/api/metas');
+            currentIndex = 0;
+            renderizarCarrossel();
+        } catch (error) {
+            console.error("Erro ao carregar metas:", error);
+            if(cardsContainer) cardsContainer.innerHTML = '<p style="text-align: center; width: 100%; color: #888;">Não foi possível carregar seus objetivos.</p>';
+        }
+    }
+
+    function renderizarCarrossel() {
+        if (!cardsContainer) return;
+        cardsContainer.innerHTML = '';
+        if (dotsContainer) dotsContainer.innerHTML = '';
+
+        if (metasCache.length === 0) {
+            cardsContainer.innerHTML = '<p style="text-align: center; width: 100%; color: #888;">Você ainda não tem nenhum objetivo. Crie um abaixo!</p>';
+            return;
+        }
+
+        const metaAtual = metasCache[currentIndex];
+        const progressoPercent = metaAtual.valor_objetivo > 0 ? (metaAtual.valor_atual / metaAtual.valor_objetivo) * 100 : 0;
+        
+        const cardHTML = `
+            <button class="arrow left"><i class="fas fa-chevron-left"></i></button>
+            <div class="balance-card" style="background: linear-gradient(135deg, ${metaAtual.cor || '#146627'}, #333);">
+                <p><strong>OBJETIVO: ${metaAtual.descricao.toUpperCase()}</strong></p>
+                <h2>R$${parseFloat(metaAtual.valor_objetivo).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</h2>
+                <div class="progress-container">
+                    <p>Progresso: R$${parseFloat(metaAtual.valor_atual).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    <div class="progress-bar"><div class="fill" style="width:${Math.min(100, progressoPercent)}%"></div></div>
+                    <p>${progressoPercent.toFixed(0)}% de conquista</p>
+                </div>
+            </div>
+            <div class="actions">
+                <button data-action="adicionar" data-id="${metaAtual.id_meta}">Adicionar Dinheiro</button>
+                <button data-action="retirar" data-id="${metaAtual.id_meta}">Retirar Dinheiro</button>
+                <div class="excluir">
+                    <button data-action="excluir" data-id="${metaAtual.id_meta}">Excluir Meta</button>
+                </div>
+            </div>
+            <button class="arrow right"><i class="fas fa-chevron-right"></i></button>
+        `;
+        cardsContainer.innerHTML = cardHTML;
+
+        if (dotsContainer) {
+            metasCache.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (index === currentIndex) dot.classList.add('active');
+                dot.dataset.index = index;
+                dotsContainer.appendChild(dot);
+            });
+        }
+    }
+
+    function mudarCard(direcao) {
+        if (metasCache.length <= 1) return;
+        currentIndex = (currentIndex + direcao + metasCache.length) % metasCache.length;
+        renderizarCarrossel();
+    }
+
+    async function renderizarGrafico() {
+        const canvas = document.getElementById('portfolioChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        if (window.myPortfolioChart instanceof Chart) {
+            window.myPortfolioChart.destroy();
+        }
+
+        try {
+            const projecaoDeSaldo = await apiRequest('/api/usuarios/historico-saldo');
+
+            const labelsProjetados = [];
+            const nomesDosMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const dataAtual = new Date();
+            const mesAtual = dataAtual.getMonth();
+
+            for (let i = 0; i < 12; i++) {
+                const indiceDoMes = (mesAtual + i) % 12;
+                labelsProjetados.push(nomesDosMeses[indiceDoMes]);
+            }
+            
+            const dadoAtual = projecaoDeSaldo[0];
+            const dadosProjetados = projecaoDeSaldo.map((val, index) => index === 0 ? null : val);
+            dadosProjetados[0] = dadoAtual; // Conecta a linha
+
+            window.myPortfolioChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labelsProjetados,
+                    datasets: [
+                        {
+                            label: 'Saldo Atual',
+                            data: [dadoAtual],
+                            borderColor: '#1e7f34',
+                            backgroundColor: '#1e7f34',
+                            borderWidth: 3,
+                            fill: false,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Projeção de Saldo',
+                            data: dadosProjetados,
+                            borderColor: '#1e7f34',
+                            borderDash: [5, 5],
+                            backgroundColor: 'rgba(30, 127, 52, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                        }
+                    ]
+                },
+                options: { 
+                    responsive: true, 
+                    plugins: { 
+                        legend: { display: false } 
+                    },
+                    scales: { 
+                        y: { beginAtZero: false }
+                    } 
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao renderizar gráfico:', error);
+        }
+    }
+
+
+    /**
+     * Configura todos os event listeners da página.
+     */
+    function setupEventListeners() {
+        const overlays = {
+            perfil: document.getElementById('overlayPerfil'),
+            criarObjetivo: document.getElementById('overlayCriarObjetivo'),
+            adicionar: document.getElementById('overlayAdicionar'),
+            retirar: document.getElementById('overlayRetirar'),
+            excluirMeta: document.getElementById('overlayExcluirMeta')
+        };
+        
+        document.getElementById('savePerfil')?.addEventListener('click', async () => {
+            const formData = new FormData(document.getElementById('perfilForm'));
+            if (!formData.get('nome')) return alert("O campo 'Nome' não pode estar vazio.");
+
+            try {
+                await apiUploadRequest('/api/usuarios/perfil', {
+                    method: 'PUT',
+                    body: formData
+                });
+                alert('Perfil atualizado com sucesso!');
+                if (overlays.perfil) overlays.perfil.style.display = 'none';
+                await carregarDashboard();
+            } catch (error) {
+                alert(`Erro ao atualizar o perfil: ${error.message}`);
+            }
+        });
+
+        document.getElementById('removerFotoBtn')?.addEventListener('click', async () => {
+            if (!confirm('Tem certeza que deseja remover sua foto de perfil?')) return;
+            try {
+                await apiRequest('/api/usuarios/avatar', { method: 'DELETE' });
+                alert('Foto de perfil removida com sucesso!');
+                const avatarPadrao = '../img/avatar.jpg';
+                document.getElementById('fotoPerfil').src = avatarPadrao;
+                document.getElementById('fotoPerfilBox').src = avatarPadrao;
+                document.getElementById('uploadFoto').value = '';
+            } catch (error) {
+                alert(`Erro ao remover a foto: ${error.message}`);
+            }
+        });
+
+        document.getElementById('perfilBtn')?.addEventListener('click', async () => {
+            try {
+                const perfil = await apiRequest('/api/usuarios/perfil');
+                document.getElementById('nomePerfil').value = perfil.nome || '';
+                document.getElementById('rendaPerfil').value = perfil.renda_mensal || '';
+                document.getElementById('despesaPerfil').value = perfil.despesa_mensal || '';
+                if (overlays.perfil) overlays.perfil.style.display = 'flex';
+            } catch (error) {
+                alert(`Erro ao carregar dados do perfil: ${error.message}`);
+            }
+        });
+
+        document.getElementById('btnCriarObjetivo')?.addEventListener('click', () => {
+            if (overlays.criarObjetivo) overlays.criarObjetivo.style.display = 'flex';
+        });
+
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            if(confirm('Tem certeza que deseja sair?')) {
+                localStorage.removeItem('token');
+                window.location.href = '../html/home.html';
+            }
+        });
+
+        document.body.addEventListener('click', async (e) => {
+            const target = e.target;
+            if (target.closest('.arrow.left')) return mudarCard(-1);
+            if (target.closest('.arrow.right')) return mudarCard(1);
+            if (target.matches('.dot')) {
+                currentIndex = parseInt(target.dataset.index);
+                renderizarCarrossel();
+                return;
+            }
+            const button = target.closest('button[data-action]');
+            if (button) {
+                const action = button.dataset.action;
+                const id = button.dataset.id;
+                if (action === 'adicionar') {
+                    overlays.adicionar.dataset.id = id;
+                    overlays.adicionar.style.display = 'flex';
+                } else if (action === 'retirar') {
+                    overlays.retirar.dataset.id = id;
+                    overlays.retirar.style.display = 'flex';
+                } else if (action === 'excluir') {
+                    overlays.excluirMeta.dataset.id = id;
+                    overlays.excluirMeta.style.display = 'flex';
+                }
+            }
+        });
+
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggle.parentElement.classList.toggle('open');
+            });
+        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown.open').forEach(dropdown => dropdown.classList.remove('open'));
+            }
+        });
+
+        document.getElementById('salvarObjetivoBtn')?.addEventListener('click', async () => {
+            const data = {
+                descricao: document.getElementById('nomeObjetivo').value,
+                valor_objetivo: document.getElementById('valorObjetivo').value,
+                tempo_meses: document.getElementById('tempoObjetivo').value,
+                frequencia: document.getElementById('frequenciaObjetivo').value,
+                cor: document.getElementById('nomeCorObjetivo').value
+            };
+            if (!data.descricao || !data.valor_objetivo) return alert("Nome e Valor do objetivo são obrigatórios!");
+            try {
+                await apiRequest('/api/metas', { method: 'POST', body: JSON.stringify(data) });
+                alert('Objetivo criado com sucesso!');
+                overlays.criarObjetivo.style.display = 'none';
+                document.getElementById('objetivoForm').reset();
+                await carregarMetasCarrossel();
+            } catch (error) {
+                alert(`Erro ao criar objetivo: ${error.message}`);
+            }
+        });
+
+        document.getElementById('salvarAcaoMetaBtn')?.addEventListener('click', async () => {
+            const id = overlays.adicionar.dataset.id;
+            const valor = document.getElementById('acaoMetaValor').value;
+            if (!valor || isNaN(valor) || parseFloat(valor) <= 0) return alert('Por favor, insira um valor numérico válido.');
+            try {
+                await apiRequest(`/api/metas/${id}/depositar`, { method: 'POST', body: JSON.stringify({ valor: parseFloat(valor) }) });
+                overlays.adicionar.style.display = 'none';
+                document.getElementById('acaoMetaValor').value = '';
+                await Promise.all([carregarDashboard(), carregarMetasCarrossel()]);
+            } catch (error) {
+                alert(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById('salvarRetirarMetaBtn')?.addEventListener('click', async () => {
+            const id = overlays.retirar.dataset.id;
+            const valor = document.getElementById('retirarMetaValor').value;
+            if (!valor || isNaN(valor) || parseFloat(valor) <= 0) return alert('Por favor, insira um valor válido.');
+            try {
+                await apiRequest(`/api/metas/${id}/retirar`, { method: 'POST', body: JSON.stringify({ valor: parseFloat(valor) }) });
+                overlays.retirar.style.display = 'none';
+                document.getElementById('retirarMetaValor').value = '';
+                await Promise.all([carregarDashboard(), carregarMetasCarrossel()]);
+            } catch (error) {
+                alert(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById('confirmarExcluirMetaBtn')?.addEventListener('click', async () => {
+            const id = overlays.excluirMeta.dataset.id;
+            try {
+                await apiRequest(`/api/metas/${id}/excluir`, { method: 'DELETE' });
+                alert('Meta excluída!');
+                overlays.excluirMeta.style.display = 'none';
+                await carregarMetasCarrossel();
+            } catch (error) {
+                alert(`Erro ao excluir meta: ${error.message}`);
+            }
+        });
+        
+        document.getElementById('fecharPerfil')?.addEventListener('click', () => overlays.perfil.style.display = 'none');
+        document.getElementById('fecharObjetivoBtn')?.addEventListener('click', () => overlays.criarObjetivo.style.display = 'none');
+        document.getElementById('fecharAcaoMetaBtn')?.addEventListener('click', () => overlays.adicionar.style.display = 'none');
+        document.getElementById('fecharRetirarMetaBtn')?.addEventListener('click', () => overlays.retirar.style.display = 'none');
+        document.getElementById('cancelarExcluirMetaBtn')?.addEventListener('click', () => overlays.excluirMeta.style.display = 'none');
+    }
+
+    // ======================================================================
+    // 4. INICIALIZAÇÃO DA PÁGINA
+    // ======================================================================
+    carregarDashboard();
+    carregarMetasCarrossel();
+    renderizarGrafico();
+    setupEventListeners();
+});
+</script>
+
+</body>
+</html>
+}
